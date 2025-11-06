@@ -20,3 +20,12 @@ mono_crash.*.json
 *.pdf
 
 files/
+# asset files
+*.fbx
+*.obj
+*.png
+*.otf
+*.ttf
+*.wav
+*.mp3
+*.ogg
