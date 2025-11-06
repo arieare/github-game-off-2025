@@ -57,6 +57,7 @@ style_name = "Regular"
 font_style = 4
 subpixel_positioning = 0
 msdf_pixel_range = 8
+msdf_size = 128
 cache/0/16/0/ascent = 16.0
 cache/0/16/0/descent = 5.0
 cache/0/16/0/underline_position = 2.03125

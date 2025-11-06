@@ -13,7 +13,7 @@ var lane_csgs: Array[CSGPolygon3D] = []
 var divider_csgs: Array[CSGPolygon3D] = []
 var _compiler: TrackCompiler = TrackCompiler.new()
 @export var track: TrackBlueprint
-var car_mesh = load("res://assets/car_gear.tscn").instantiate()
+@onready var car_mesh = load("res://modules/car/car_models/car_gear.tscn").instantiate()
 
 var track_model: TrackModel
 var path: Path3D

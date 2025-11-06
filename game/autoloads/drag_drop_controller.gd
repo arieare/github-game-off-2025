@@ -24,18 +24,9 @@ var picked_object: ComponentPickable3D = null
 func _ready() -> void:
 	#spawn a rectangular collider plane which cover the camera in a certain distance (e.g 10 units perpendicular from camera)
 	#this collider will only be shown when is_dragging is true
-	drag_plane = StaticBody3D.new()
-	var plane_shape = BoxShape3D.new()
-	plane_shape.size = Vector3(100, 100, 1)
-	drag_collision_shape = CollisionShape3D.new()
-	drag_collision_shape.shape = plane_shape
-	drag_plane.add_child(drag_collision_shape)
-	add_child(drag_plane)
-	drag_plane.position = get_viewport().get_camera_3d().transform.origin + get_viewport().get_camera_3d().transform.basis.z * -10
-	drag_plane.look_at(get_viewport().get_camera_3d().transform.origin, Vector3.UP)
-	drag_plane.visible = false
-	drag_collision_shape.disabled = true
-
+	
+	spawn_drag_plane()
+	
 	fake_mesh_instance = MeshInstance3D.new()
 	var mesh = BoxMesh.new()
 	mesh.size = Vector3(1, 1, 1)
@@ -43,6 +34,20 @@ func _ready() -> void:
 	add_child(fake_mesh_instance)
 	fake_mesh_instance.visible = false
 	pass
+
+func spawn_drag_plane() -> void:
+	if get_viewport().get_camera_3d():
+		drag_plane = StaticBody3D.new()
+		var plane_shape = BoxShape3D.new()
+		plane_shape.size = Vector3(100, 100, 1)
+		drag_collision_shape = CollisionShape3D.new()
+		drag_collision_shape.shape = plane_shape
+		drag_plane.add_child(drag_collision_shape)
+		add_child(drag_plane)
+		drag_plane.position = get_viewport().get_camera_3d().transform.origin + get_viewport().get_camera_3d().transform.basis.z * -10
+		drag_plane.look_at(get_viewport().get_camera_3d().transform.origin, Vector3.UP)
+		drag_plane.visible = false
+		drag_collision_shape.disabled = true	
 
 func check_mouse_ray_collision(ray_origin: Vector3, ray_direction: Vector3) -> Dictionary:
 	var space_state = get_world_3d().direct_space_state
@@ -53,19 +58,20 @@ func check_mouse_ray_collision(ray_origin: Vector3, ray_direction: Vector3) -> D
 	return result
 
 func _physics_process(delta: float) -> void:
-	mouse_ray_origin = get_viewport().get_camera_3d().project_ray_origin(get_viewport().get_mouse_position())
-	mouse_ray_direction = get_viewport().get_camera_3d().project_ray_normal(get_viewport().get_mouse_position())	
-	ray_collision = check_mouse_ray_collision(mouse_ray_origin, mouse_ray_direction)
+	if get_viewport().get_camera_3d():
+		mouse_ray_origin = get_viewport().get_camera_3d().project_ray_origin(get_viewport().get_mouse_position())
+		mouse_ray_direction = get_viewport().get_camera_3d().project_ray_normal(get_viewport().get_mouse_position())	
+		ray_collision = check_mouse_ray_collision(mouse_ray_origin, mouse_ray_direction)
 
-	if is_dragging and picked_object:
-		#update fake mesh position to follow mouse ray on drag plane
-		var plane_space_state = drag_plane.get_world_3d().direct_space_state
-		var plane_query = PhysicsRayQueryParameters3D.new()
-		plane_query.from = mouse_ray_origin
-		plane_query.to = mouse_ray_origin + mouse_ray_direction * ray_length
-		var plane_result = plane_space_state.intersect_ray(plane_query)
-		if plane_result.has("position"):
-			fake_mesh_instance.position = plane_result["position"] + drag_offset
+		if is_dragging and picked_object:
+			#update fake mesh position to follow mouse ray on drag plane
+			var plane_space_state = drag_plane.get_world_3d().direct_space_state
+			var plane_query = PhysicsRayQueryParameters3D.new()
+			plane_query.from = mouse_ray_origin
+			plane_query.to = mouse_ray_origin + mouse_ray_direction * ray_length
+			var plane_result = plane_space_state.intersect_ray(plane_query)
+			if plane_result.has("position"):
+				fake_mesh_instance.position = plane_result["position"] + drag_offset
 
 
 func _input(event: InputEvent) -> void:
@@ -84,6 +90,7 @@ func _input(event: InputEvent) -> void:
 			object_dropped.emit(picked_object)
 			picked_object = null
 			is_dragging = false
-			drag_plane.visible = false
-			drag_collision_shape.disabled = true
+			if drag_plane:
+				drag_plane.visible = false
+				drag_collision_shape.disabled = true
 			fake_mesh_instance.visible = false

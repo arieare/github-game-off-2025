@@ -1,7 +1,7 @@
 [gd_scene load_steps=40 format=3 uid="uid://c7auuy8faw3do"]
 
 [ext_resource type="Script" uid="uid://b7wovh0t2itor" path="res://modules/track/track_renderer_3d.gd" id="1_66fm1"]
-[ext_resource type="Script" uid="uid://dw0k251mokf2t" path="res://scenes/sim/sim_3d.gd" id="1_qbjwp"]
+[ext_resource type="Script" uid="uid://dw0k251mokf2t" path="res://scenes/sim_3d/sim_3d.gd" id="1_qbjwp"]
 [ext_resource type="Resource" uid="uid://dhvdn8clqrgbi" path="res://assets/tracks/basic_loop.tres" id="2_8rtlt"]
 [ext_resource type="Script" uid="uid://boxndawm4vmgs" path="res://modules/simulation/simulation_controller.gd" id="4_40j5w"]
 [ext_resource type="Shader" uid="uid://d15ccd7um3ja1" path="res://assets/shader/tilt_shift.gdshader" id="5_7pner"]
@@ -10,7 +10,7 @@
 [ext_resource type="ArrayMesh" uid="uid://3gkva8b8ypha" path="res://assets/model/environment/plant_bushSmall.obj" id="9_pfj6h"]
 [ext_resource type="Script" uid="uid://cnyx770l7mts6" path="res://modules/car/car_component.gd" id="9_s4ecn"]
 [ext_resource type="Script" uid="uid://ckb8ujhpc38gl" path="res://modules/spareparts/motor/motor_hyper_dash_3.gd" id="10_3gsmu"]
-[ext_resource type="Script" uid="uid://4mn646pcobam" path="res://scenes/sim/sim_ui_3d.gd" id="10_pfj6h"]
+[ext_resource type="Script" uid="uid://4mn646pcobam" path="res://scenes/sim_3d/sim_ui_3d.gd" id="10_pfj6h"]
 [ext_resource type="Script" uid="uid://c58jhk64ii2y0" path="res://modules/spareparts/body/body_lightweight_carbon.gd" id="10_pot30"]
 [ext_resource type="ArrayMesh" uid="uid://curlx4dl13mkf" path="res://assets/model/environment/plant_bushTriangle.obj" id="10_pt0l3"]
 [ext_resource type="Script" uid="uid://kq0pff0xhghq" path="res://modules/spareparts/roller/roller_standard_kit.gd" id="11_3gsmu"]
@@ -19,7 +19,7 @@
 [ext_resource type="Script" uid="uid://8g8uxromlya1" path="res://modules/spareparts/wheel/wheel_standard_kit.gd" id="13_3gsmu"]
 [ext_resource type="ArrayMesh" uid="uid://bi6008iq5ciqm" path="res://assets/model/environment/tree_cone.obj" id="13_pfj6h"]
 [ext_resource type="Texture2D" uid="uid://byvph1xprsher" path="res://assets/ui/ic_car.png" id="13_pt0l3"]
-[ext_resource type="Script" uid="uid://ccdjulgenb5hh" path="res://scenes/sim/start_machine_button.gd" id="18_4ey6a"]
+[ext_resource type="Script" uid="uid://ccdjulgenb5hh" path="res://scenes/sim_3d/start_machine_button.gd" id="18_4ey6a"]
 [ext_resource type="Shader" uid="uid://dx8jkuhw2uv4s" path="res://assets/shader/vignette.gdshader" id="21_viiki"]
 
 [sub_resource type="Gradient" id="Gradient_mf771"]

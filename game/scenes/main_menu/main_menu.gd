@@ -13,7 +13,7 @@ func _ready() -> void:
 	button_start.grab_focus()
 
 func _on_button_start_pressed() -> void:
-	pass
+	SceneManager.change_scene_to(&"simulation")
 
 func _on_button_options_pressed() -> void:
 	pass
