@@ -18,3 +18,5 @@ mono_crash.*.json
 *.mp4
 *.mov
 *.pdf
+
+files/
