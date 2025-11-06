@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cutipmvvchnjw"]
+
+[ext_resource type="PackedScene" uid="uid://bfpjoe44wtc15" path="res://assets/gear.fbx" id="1_7vgwx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7vgwx"]
+shading_mode = 0
+albedo_color = Color(0.971587, 0, 0.16614467, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nq0lo"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="gear" instance=ExtResource("1_7vgwx")]
+transform = Transform3D(-0.03, 0, -2.6226832e-09, 0, 0.03, 0, 2.6226832e-09, 0, -0.03, 0, 0, 0)
+
+[node name="Cube" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_7vgwx")
+
+[node name="body" parent="." index="6"]
+surface_material_override/0 = SubResource("StandardMaterial3D_7vgwx")
+surface_material_override/1 = SubResource("StandardMaterial3D_nq0lo")

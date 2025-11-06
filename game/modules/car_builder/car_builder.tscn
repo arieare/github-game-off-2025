@@ -1,0 +1,119 @@
+[gd_scene load_steps=15 format=3 uid="uid://dx13debmafo3q"]
+
+[ext_resource type="PackedScene" uid="uid://csbxfrva4uedg" path="res://assets/model/car/body/spoiler.glb" id="1_5fpbc"]
+[ext_resource type="Script" uid="uid://hfg6jxgxhwso" path="res://modules/car_builder/car_builder.gd" id="1_l6iho"]
+[ext_resource type="ArrayMesh" uid="uid://dfqwav1t6nv3c" path="res://assets/model/car/body/Untitled.obj" id="2_l6iho"]
+[ext_resource type="Script" uid="uid://caqswnuau7vux" path="res://components/component_pickable_3d.gd" id="4_ae11m"]
+[ext_resource type="Script" uid="uid://b334wtbk43hu" path="res://modules/car_builder/car_builder_cam.gd" id="4_ppbh7"]
+[ext_resource type="ArrayMesh" uid="uid://dc8uyg8ssqmfe" path="res://assets/model/car/motor/spoiler.obj" id="5_f07mb"]
+[ext_resource type="Shader" uid="uid://dx8jkuhw2uv4s" path="res://assets/shader/vignette.gdshader" id="6_c8ap8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ae11m"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.8380404, 0.2675271, 0.2628369, 1)
+roughness = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f07mb"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.24305603, 0.041579217, 0.042935, 1)
+roughness = 0.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5fpbc"]
+
+[sub_resource type="Environment" id="Environment_5fpbc"]
+fog_enabled = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_f07mb"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ae11m"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ppbh7"]
+shader = ExtResource("6_c8ap8")
+shader_parameter/inner_radius = 0.5
+shader_parameter/outer_radius = 0.9
+shader_parameter/vignette_strength = 0.7
+shader_parameter/dither_strength = 0.03
+shader_parameter/vignette_color = Color(0.24296567, 0.24296582, 0.24296552, 1)
+
+[node name="CarBuilder" type="Node3D"]
+script = ExtResource("1_l6iho")
+
+[node name="Car" type="Node3D" parent="."]
+
+[node name="Body" type="Node3D" parent="Car"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17773247, 0)
+
+[node name="spoiler2" parent="Car/Body" instance=ExtResource("1_5fpbc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82226753, -2)
+
+[node name="Untitled" type="MeshInstance3D" parent="Car/Body"]
+mesh = ExtResource("2_l6iho")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_ae11m")
+surface_material_override/1 = SubResource("StandardMaterial3D_f07mb")
+
+[node name="Chassis" type="Node3D" parent="Car"]
+
+[node name="RollerFrontRight" type="Node3D" parent="Car"]
+
+[node name="RollerFrontLeft" type="Node3D" parent="Car"]
+
+[node name="RollerBackRight" type="Node3D" parent="Car"]
+
+[node name="RollerBackLeft" type="Node3D" parent="Car"]
+
+[node name="WheelFrontRight" type="Node3D" parent="Car"]
+
+[node name="WheelFrontLeft" type="Node3D" parent="Car"]
+
+[node name="WheelBackRight" type="Node3D" parent="Car"]
+
+[node name="WheelBackLeft" type="Node3D" parent="Car"]
+
+[node name="Motor" type="Node3D" parent="Car"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Car/Motor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.8482885)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Car/Motor/StaticBody3D"]
+shape = SubResource("SphereShape3D_5fpbc")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, 0, 4, 2)
+script = ExtResource("4_ppbh7")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_5fpbc")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.7390905, 0.043563217, 0.67219603, 0, 0.99790657, -0.064671636, -0.6736061, 0.047798194, 0.7375432, 0, 0, 0)
+
+[node name="Components" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.3097773)
+
+[node name="ComponentPickable3D" type="StaticBody3D" parent="Components" node_paths=PackedStringArray("entity")]
+script = ExtResource("4_ae11m")
+entity = NodePath("..")
+metadata/_custom_type_script = "uid://caqswnuau7vux"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Components/ComponentPickable3D"]
+visible = false
+shape = SubResource("SphereShape3D_f07mb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Components"]
+visible = false
+mesh = SubResource("SphereMesh_ae11m")
+
+[node name="Spoiler" type="MeshInstance3D" parent="Components"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28365314, 0, 1.591095)
+mesh = ExtResource("5_f07mb")
+
+[node name="FXVignette" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ppbh7")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

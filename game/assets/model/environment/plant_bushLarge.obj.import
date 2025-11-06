@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b1w5pu0od1rv4"
+path="res://.godot/imported/plant_bushLarge.obj-7c361d2fd09861b007d6f887908fcd4f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/plant_bushLarge.obj-7c361d2fd09861b007d6f887908fcd4f.mesh"]
+
+source_file="res://assets/model/environment/plant_bushLarge.obj"
+dest_files=["res://.godot/imported/plant_bushLarge.obj-7c361d2fd09861b007d6f887908fcd4f.mesh", "res://.godot/imported/plant_bushLarge.obj-7c361d2fd09861b007d6f887908fcd4f.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

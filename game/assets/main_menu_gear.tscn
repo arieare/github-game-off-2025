@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://78clpws8pbs1"]
+
+[ext_resource type="PackedScene" uid="uid://bfpjoe44wtc15" path="res://assets/gear.fbx" id="1_d3sv0"]
+
+[node name="gear" instance=ExtResource("1_d3sv0")]
+
+[node name="Cylinder_005" parent="." index="5"]
+visible = false

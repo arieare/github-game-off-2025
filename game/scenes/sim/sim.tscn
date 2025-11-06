@@ -1,0 +1,233 @@
+[gd_scene load_steps=20 format=3 uid="uid://cqow47bch5ocs"]
+
+[ext_resource type="Script" uid="uid://bs2qeucwtife5" path="res://scenes/sim/sim.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://r700wjvo61k0" path="res://modules/track/track_renderer.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://boxndawm4vmgs" path="res://modules/simulation/simulation_controller.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://cnyx770l7mts6" path="res://modules/car/car_component.gd" id="4_0kcb0"]
+[ext_resource type="Script" uid="uid://ckb8ujhpc38gl" path="res://modules/spareparts/motor/motor_hyper_dash_3.gd" id="4_l40ur"]
+[ext_resource type="Script" uid="uid://8g8uxromlya1" path="res://modules/spareparts/wheel/wheel_standard_kit.gd" id="5_ugn6n"]
+[ext_resource type="Script" uid="uid://bb5eyiv7t8d6c" path="res://modules/spareparts/battery/battery_lite.gd" id="6_3wuub"]
+[ext_resource type="Script" uid="uid://kq0pff0xhghq" path="res://modules/spareparts/roller/roller_standard_kit.gd" id="7_oqcuq"]
+[ext_resource type="Script" uid="uid://c58jhk64ii2y0" path="res://modules/spareparts/body/body_lightweight_carbon.gd" id="8_0grr2"]
+[ext_resource type="Script" uid="uid://4u1gcxvthhgg" path="res://modules/spareparts/body/body_standard_kit.gd" id="8_cav13"]
+[ext_resource type="Script" uid="uid://0akr7rkn2ckx" path="res://modules/spareparts/motor/motor_standard_kit.gd" id="8_h45om"]
+[ext_resource type="Script" uid="uid://c8kjux3u0o22k" path="res://modules/spareparts/wheel/wheel_wildcard.gd" id="11_b2ays"]
+[ext_resource type="Script" uid="uid://dn33s4el2mvpf" path="res://modules/spareparts/battery/battery_wildcard.gd" id="12_lmp0c"]
+[ext_resource type="Script" uid="uid://brejp5gmmp80x" path="res://scenes/sim/sim_ui.gd" id="12_x8pdu"]
+[ext_resource type="Script" uid="uid://co1xdn4htrtet" path="res://modules/spareparts/body/body_wildcard.gd" id="13_qwqi5"]
+[ext_resource type="Script" uid="uid://ddcwwh8nixprq" path="res://modules/spareparts/roller/roller_wildcard.gd" id="14_w3c51"]
+[ext_resource type="FontFile" uid="uid://dgcockbmef8kw" path="res://assets/font/RacingSansOne-Regular.ttf" id="18_qwqi5"]
+[ext_resource type="FontFile" uid="uid://c4ds4nrjv5wpv" path="res://assets/font/Inter-Medium.otf" id="19_w3c51"]
+
+[sub_resource type="Theme" id="Theme_qwqi5"]
+default_font = ExtResource("19_w3c51")
+CheckButton/colors/font_color = Color(0, 0, 0, 1)
+CheckButton/colors/font_hover_color = Color(0.08078321, 0.080783345, 0.08078361, 1)
+CheckButton/colors/font_hover_pressed_color = Color(0.174626, 0.17462596, 0.17462596, 1)
+CheckButton/colors/font_pressed_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
+
+[node name="Sim" type="Node" node_paths=PackedStringArray("track_renderer", "controller")]
+script = ExtResource("1_ig7tw")
+track_renderer = NodePath("TrackRenderer")
+controller = NodePath("SimulationController")
+car_component_paths = Array[NodePath]([NodePath("CarComponent"), NodePath("CarComponent2"), NodePath("CarComponent3")])
+sim_ui_path = NodePath("UI")
+track_blueprint_path = "uid://dhvdn8clqrgbi"
+
+[node name="TrackRenderer" type="Node2D" parent="."]
+position = Vector2(295, 187)
+script = ExtResource("2_0xm2m")
+px_per_m = 50.0
+line_color = Color(0.16745102, 0.16745102, 0.16745102, 1)
+line_width = 0.0
+show_markers = false
+marker_radius = 4.0
+marker_color = Color(0.14, 0.14, 0.14, 1)
+show_marker_labels = false
+car_color = Color(0, 0, 0, 1)
+start_lane_color = Color(0.6, 0.6, 0.6, 1)
+car_palette = Array[Color]([Color(1, 0.8, 0.2, 1), Color(0, 0.01666689, 1, 1), Color(1, 0, 0, 1), Color(0.33333325, 1, 0, 1), Color(0.8, 0.5, 1, 1)])
+
+[node name="CarComponent" type="Node" parent="."]
+script = ExtResource("4_0kcb0")
+start_enabled = true
+base_mass = 0.05
+
+[node name="WheelStandardKit" type="Node" parent="CarComponent"]
+script = ExtResource("5_ugn6n")
+
+[node name="WheelStandardKit2" type="Node" parent="CarComponent"]
+script = ExtResource("5_ugn6n")
+
+[node name="WheelStandardKit3" type="Node" parent="CarComponent"]
+script = ExtResource("5_ugn6n")
+
+[node name="WheelStandardKit4" type="Node" parent="CarComponent"]
+script = ExtResource("5_ugn6n")
+
+[node name="BatteryLite" type="Node" parent="CarComponent"]
+script = ExtResource("6_3wuub")
+metadata/_custom_type_script = "uid://bb5eyiv7t8d6c"
+
+[node name="RollerStandardKit" type="Node" parent="CarComponent"]
+script = ExtResource("7_oqcuq")
+metadata/_custom_type_script = "uid://kq0pff0xhghq"
+
+[node name="RollerStandardKit2" type="Node" parent="CarComponent"]
+script = ExtResource("7_oqcuq")
+metadata/_custom_type_script = "uid://kq0pff0xhghq"
+
+[node name="RollerStandardKit3" type="Node" parent="CarComponent"]
+script = ExtResource("7_oqcuq")
+metadata/_custom_type_script = "uid://kq0pff0xhghq"
+
+[node name="RollerStandardKit4" type="Node" parent="CarComponent"]
+script = ExtResource("7_oqcuq")
+metadata/_custom_type_script = "uid://kq0pff0xhghq"
+
+[node name="MotorHyperDash3" type="Node" parent="CarComponent"]
+script = ExtResource("4_l40ur")
+metadata/_custom_type_script = "uid://ckb8ujhpc38gl"
+
+[node name="BodyLightWeightCarbon" type="Node" parent="CarComponent"]
+script = ExtResource("8_0grr2")
+metadata/_custom_type_script = "uid://c58jhk64ii2y0"
+
+[node name="CarComponent2" type="Node" parent="."]
+script = ExtResource("4_0kcb0")
+start_enabled = true
+base_mass = 0.05
+
+[node name="WheelStandardKit" type="Node" parent="CarComponent2"]
+script = ExtResource("5_ugn6n")
+
+[node name="WheelStandardKit2" type="Node" parent="CarComponent2"]
+script = ExtResource("5_ugn6n")
+
+[node name="WheelStandardKit3" type="Node" parent="CarComponent2"]
+script = ExtResource("5_ugn6n")
+
+[node name="WheelStandardKit4" type="Node" parent="CarComponent2"]
+script = ExtResource("5_ugn6n")
+
+[node name="BatteryLite" type="Node" parent="CarComponent2"]
+script = ExtResource("6_3wuub")
+metadata/_custom_type_script = "uid://bb5eyiv7t8d6c"
+
+[node name="RollerStandardKit" type="Node" parent="CarComponent2"]
+script = ExtResource("7_oqcuq")
+metadata/_custom_type_script = "uid://kq0pff0xhghq"
+
+[node name="RollerStandardKit2" type="Node" parent="CarComponent2"]
+script = ExtResource("7_oqcuq")
+metadata/_custom_type_script = "uid://kq0pff0xhghq"
+
+[node name="RollerStandardKit3" type="Node" parent="CarComponent2"]
+script = ExtResource("7_oqcuq")
+metadata/_custom_type_script = "uid://kq0pff0xhghq"
+
+[node name="RollerStandardKit4" type="Node" parent="CarComponent2"]
+script = ExtResource("7_oqcuq")
+metadata/_custom_type_script = "uid://kq0pff0xhghq"
+
+[node name="BodyStandardKit" type="Node" parent="CarComponent2"]
+script = ExtResource("8_cav13")
+
+[node name="MotorStandardKit" type="Node" parent="CarComponent2"]
+script = ExtResource("8_h45om")
+metadata/_custom_type_script = "uid://0akr7rkn2ckx"
+
+[node name="CarComponent3" type="Node" parent="."]
+script = ExtResource("4_0kcb0")
+start_enabled = true
+base_mass = 0.05
+
+[node name="WheelWildcard" type="Node" parent="CarComponent3"]
+script = ExtResource("11_b2ays")
+
+[node name="WheelWildcard2" type="Node" parent="CarComponent3"]
+script = ExtResource("11_b2ays")
+
+[node name="WheelWildcard3" type="Node" parent="CarComponent3"]
+script = ExtResource("11_b2ays")
+
+[node name="WheelWildcard4" type="Node" parent="CarComponent3"]
+script = ExtResource("11_b2ays")
+
+[node name="BatteryWildcard" type="Node" parent="CarComponent3"]
+script = ExtResource("12_lmp0c")
+
+[node name="BodyWildcard" type="Node" parent="CarComponent3"]
+script = ExtResource("13_qwqi5")
+
+[node name="RollerWildcard" type="Node" parent="CarComponent3"]
+script = ExtResource("14_w3c51")
+
+[node name="RollerWildcard2" type="Node" parent="CarComponent3"]
+script = ExtResource("14_w3c51")
+
+[node name="RollerWildcard3" type="Node" parent="CarComponent3"]
+script = ExtResource("14_w3c51")
+
+[node name="RollerWildcard4" type="Node" parent="CarComponent3"]
+script = ExtResource("14_w3c51")
+
+[node name="MotorStandardKit" type="Node" parent="CarComponent3"]
+script = ExtResource("8_h45om")
+metadata/_custom_type_script = "uid://0akr7rkn2ckx"
+
+[node name="SimulationController" type="Node2D" parent="."]
+script = ExtResource("3_h2yge")
+
+[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("start_button_group", "telemetry_log")]
+script = ExtResource("12_x8pdu")
+start_button_group = NodePath("StartButtonGroup")
+telemetry_log = NodePath("Telemetry")
+
+[node name="BoxContainer" type="BoxContainer" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -121.0
+offset_top = 17.0
+offset_right = -22.0
+offset_bottom = 43.0
+grow_horizontal = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/BoxContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(1, 0.25, 0.2624998, 1)
+theme_override_fonts/normal_font = ExtResource("18_qwqi5")
+text = "TINY"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="UI/BoxContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.19999999, 0.32000005, 1, 1)
+theme_override_fonts/normal_font = ExtResource("18_qwqi5")
+text = "GEARS"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 2
+
+[node name="Telemetry" type="RichTextLabel" parent="UI"]
+offset_right = 314.0
+offset_bottom = 182.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("19_w3c51")
+text = "telemetry texts"
+
+[node name="StartButtonGroup" type="BoxContainer" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -99.0
+offset_right = 197.0
+grow_vertical = 0
+theme = SubResource("Theme_qwqi5")

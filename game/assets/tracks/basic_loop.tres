@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TrackBlueprint" load_steps=2 format=3 uid="uid://dhvdn8clqrgbi"]
+
+[ext_resource type="Script" uid="uid://3birlp7nuw2y" path="res://modules/track/track_blueprint.gd" id="1_ec8qc"]
+
+[resource]
+script = ExtResource("1_ec8qc")
+lanes = 3
+laps_required = 10
+tokens = ["ST", "S:1,mu1.3", "S:1,mu1.3", "CL:r1.0,a45,b6,mu1.3", "CL:r1.0,a45,b6,mu1.3", "CL:r1.0,a45,b6,mu1.3", "CL:r1.0,a45,b6,mu1.3", "S:1,mu1.3", "S:1,mu1.3", "CL:r1.0,a45,b6,mu1.3", "CL:r1.0,a45,b6,mu1.3", "CL:r1.0,a45,b6,mu1.3", "CL:r1.0,a45,b6,mu1.3", "FN"]
+metadata/_custom_type_script = "uid://3birlp7nuw2y"
