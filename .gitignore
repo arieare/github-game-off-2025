@@ -15,6 +15,6 @@ export_credentials.cfg
 data_*/
 mono_crash.*.json
 
-.mp4
-.mov
-.pdf
+*.mp4
+*.mov
+*.pdf
