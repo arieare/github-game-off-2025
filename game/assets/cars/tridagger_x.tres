@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="CarBlueprint" load_steps=2 format=3 uid="uid://rhyvix4gigas"]
+
+[ext_resource type="Script" uid="uid://bwdjxy3410jid" path="res://modules/car/car_blueprint.gd" id="1_q50j3"]
+
+[resource]
+script = ExtResource("1_q50j3")
+car_name = "Tridagger X"
+designed_by = "Starter Kit"
+sparepart_slot = {
+"battery": {
+"id": "battery_lite"
+},
+"body": {
+"id": "body_standard_kit"
+},
+"motor": {
+"id": "motor_standard_kit"
+},
+"rollers": [{
+"id": "roller_standard_kit"
+}, {
+"id": "roller_standard_kit"
+}, {
+"id": "roller_standard_kit"
+}, {
+"id": "roller_standard_kit"
+}],
+"wheels": [{
+"id": "wheel_standard_kit"
+}, {
+"id": "wheel_standard_kit"
+}, {
+"id": "wheel_standard_kit"
+}, {
+"id": "wheel_standard_kit"
+}]
+}
+metadata/_custom_type_script = "uid://bwdjxy3410jid"

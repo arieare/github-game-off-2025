@@ -4,8 +4,6 @@ extends CanvasLayer
 @export var button_start: Button
 @export var button_options: Button
 
-signal focus_change(new_focus: Control)
-
 func _ready() -> void:
 	button_start.pressed.connect(_on_button_start_pressed)
 	button_options.pressed.connect(_on_button_options_pressed)

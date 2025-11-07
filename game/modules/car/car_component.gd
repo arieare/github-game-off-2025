@@ -10,6 +10,17 @@ const SLOT_WHEEL := "wheel"
 const SLOT_ROLLER := "roller"
 const SLOT_BODY := "body"
 
+#const SparePartData := preload("res://modules/spareparts/spare_part_data.gd")
+const SLOT_TO_BLUEPRINT_KEY := {
+	SLOT_BODY: "body",
+	SLOT_MOTOR: "motor",
+	SLOT_BATTERY: "battery"
+}
+const MULTI_SLOT_TO_BLUEPRINT_KEY := {
+	SLOT_WHEEL: "wheels",
+	SLOT_ROLLER: "rollers"
+}
+
 @export var body_sparepart: Script
 @export var motor_sparepart: Script
 @export var roller_sparepart: Script
@@ -693,3 +704,195 @@ func to_config() -> Dictionary:
 		}
 		(cfg["parts"] as Array).append(part_entry)
 	return cfg
+
+func to_blueprint(existing: CarBlueprint = null, metadata: Dictionary = {}) -> CarBlueprint:
+	var blueprint: CarBlueprint = existing if existing != null else CarBlueprint.new()
+	var parts := _gather_parts()
+	var slots: Dictionary = {}
+
+	# Single slot payloads
+	for slot in SLOT_TO_BLUEPRINT_KEY.keys():
+		var key: String = SLOT_TO_BLUEPRINT_KEY[slot]
+		slots[key] = _part_to_blueprint_payload(parts.get(slot, null))
+
+	# Multi slot payloads (arrays)
+	for slot in MULTI_SLOT_TO_BLUEPRINT_KEY.keys():
+		var multi_key: String = MULTI_SLOT_TO_BLUEPRINT_KEY[slot]
+		var slot_parts: Array = []
+		if parts.has(slot) and parts[slot] is Array:
+			slot_parts = parts[slot]
+		slots[multi_key] = _parts_to_blueprint_payloads(slot_parts)
+
+	blueprint.sparepart_slot = slots
+
+	if metadata.has("car_name"):
+		blueprint.car_name = String(metadata["car_name"])
+	if metadata.has("designed_by"):
+		blueprint.designed_by = String(metadata["designed_by"])
+	if metadata.has("metadata") and metadata["metadata"] is Dictionary:
+		blueprint.metadata = (metadata["metadata"] as Dictionary).duplicate(true)
+	else:
+		for key in metadata.keys():
+			if key == "car_name" or key == "designed_by":
+				continue
+			if key == "metadata":
+				continue
+			blueprint.metadata[key] = metadata[key]
+
+	return blueprint
+
+func apply_blueprint(blueprint: CarBlueprint, options: Dictionary = {}) -> bool:
+	if blueprint == null:
+		push_warning("CarComponent: apply_blueprint called with null blueprint.")
+		return false
+
+	var catalog: Variant = options.get("catalog", SparePartData.sparepart)
+	if not (catalog is Dictionary):
+		catalog = {}
+	var catalog_dict: Dictionary = catalog
+	var allow_missing: bool = bool(options.get("allow_missing", false))
+
+	clear_parts()
+
+	var success: bool = true
+
+	# Single slot payloads
+	for slot in SLOT_TO_BLUEPRINT_KEY.keys():
+		var key: String = SLOT_TO_BLUEPRINT_KEY[slot]
+		var payload: Variant = blueprint.get_slot_data(key, {})
+		if payload is Dictionary and not payload.is_empty():
+			var node: Node = _instantiate_blueprint_part(payload, catalog_dict)
+			if node == null:
+				success = false
+				if not allow_missing:
+					continue
+			else:
+				equip(node)
+
+	# Multi slot payloads
+	for slot in MULTI_SLOT_TO_BLUEPRINT_KEY.keys():
+		var multi_key: String = MULTI_SLOT_TO_BLUEPRINT_KEY[slot]
+		var payloads: Variant = blueprint.get_slot_data(multi_key, [])
+		if payloads is Array:
+			for payload in payloads:
+				if not (payload is Dictionary) or (payload as Dictionary).is_empty():
+					continue
+				var part_node: Node = _instantiate_blueprint_part(payload, catalog_dict)
+				if part_node == null:
+					success = false
+					if not allow_missing:
+						continue
+				else:
+					equip(part_node)
+
+	return success
+
+func _part_to_blueprint_payload(part: Node) -> Dictionary:
+	if part == null:
+		return {}
+	var payload: Dictionary = {}
+	var identifier: String = _extract_part_identifier(part)
+	if identifier != "":
+		payload["id"] = identifier
+	var overrides_dict: Dictionary = _get_overrides_dictionary(part)
+	if not overrides_dict.is_empty():
+		payload["overrides"] = overrides_dict
+	var runtime_dict: Dictionary = _get_runtime_dictionary(part)
+	if not runtime_dict.is_empty():
+		payload["runtime"] = runtime_dict
+	return payload
+
+func _parts_to_blueprint_payloads(parts: Array) -> Array:
+	var payloads: Array = []
+	for part in parts:
+		if part == null:
+			continue
+		payloads.append(_part_to_blueprint_payload(part))
+	return payloads
+
+func _instantiate_blueprint_part(payload: Dictionary, catalog: Dictionary) -> Node:
+	if payload.is_empty():
+		return null
+	var part_id: String = String(payload.get("id", ""))
+	if part_id == "":
+		push_warning("CarComponent: Blueprint payload missing part id; skipping.")
+		return null
+	var script_path: String = _lookup_script_path(part_id, catalog)
+	if script_path == "":
+		push_warning("CarComponent: Unable to resolve script for part id '%s'." % part_id)
+		return null
+	var script_res: Script = load(script_path)
+	if script_res == null:
+		push_warning("CarComponent: Failed to load spare part script at '%s'." % script_path)
+		return null
+	var node : Node = script_res.new()
+	if node == null:
+		return null
+	if payload.has("overrides") and node.has_method("set_overrides"):
+		node.set_overrides(_duplicate_variant(payload["overrides"]))
+	elif payload.has("overrides") and "overrides" in node:
+		node.overrides = _duplicate_variant(payload["overrides"])
+	if payload.has("runtime") and node.has_method("set_runtime"):
+		node.set_runtime(_duplicate_variant(payload["runtime"]))
+	elif payload.has("runtime") and "runtime" in node:
+		node.runtime = _duplicate_variant(payload["runtime"])
+	return node
+
+func _lookup_script_path(part_id: String, catalog: Dictionary) -> String:
+	if part_id == "":
+		return ""
+	if catalog.has(part_id):
+		var entry: Dictionary = catalog[part_id]
+		if entry.has("source-path"):
+			return String(entry["source-path"])
+	if SparePartData.sparepart.has(part_id):
+		var fallback_entry: Dictionary = SparePartData.sparepart[part_id]
+		if fallback_entry.has("source-path"):
+			return String(fallback_entry["source-path"])
+	return ""
+
+func _extract_part_identifier(part: Node) -> String:
+	if part == null:
+		return ""
+	if part.has_meta("name_id"):
+		return String(part.get_meta("name_id"))
+	if "name_id" in part:
+		return String(part.name_id)
+	if part.has_method("get_name_id"):
+		return String(part.get_name_id())
+	return ""
+
+func _get_part_script_path(part: Node) -> String:
+	if part == null:
+		return ""
+	var script_resource: Script = part.get_script()
+	if script_resource == null:
+		return ""
+	return script_resource.resource_path
+
+func _get_overrides_dictionary(part: Node) -> Dictionary:
+	if part == null:
+		return {}
+	if "overrides" in part and part.overrides is Dictionary:
+		return (part.overrides as Dictionary).duplicate(true)
+	if part.has_meta("overrides") and part.get_meta("overrides") is Dictionary:
+		return (part.get_meta("overrides") as Dictionary).duplicate(true)
+	return {}
+
+func _get_runtime_dictionary(part: Node) -> Dictionary:
+	if part == null:
+		return {}
+	if "runtime" in part and part.runtime is Dictionary:
+		return (part.runtime as Dictionary).duplicate(true)
+	if part.has_meta("runtime") and part.get_meta("runtime") is Dictionary:
+		return (part.get_meta("runtime") as Dictionary).duplicate(true)
+	return {}
+
+func _duplicate_variant(value: Variant) -> Variant:
+	if value is Dictionary:
+		return (value as Dictionary).duplicate(true)
+	if value is Array:
+		return (value as Array).duplicate(true)
+	if value is PackedStringArray:
+		return PackedStringArray(value)
+	return value

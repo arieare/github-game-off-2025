@@ -520,14 +520,21 @@ vertical = true
 [node name="ButtonStart" type="Button" parent="UI/Control/Menu"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_fsom3")
-text = "Start"
+text = "Challenges"
+flat = true
+alignment = 0
+
+[node name="ButtonFreePlay" type="Button" parent="UI/Control/Menu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_fsom3")
+text = "Zen Mode"
 flat = true
 alignment = 0
 
 [node name="ButtonCars" type="Button" parent="UI/Control/Menu"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_fsom3")
-text = "My Gears"
+text = "Garage"
 flat = true
 alignment = 0
 
@@ -607,48 +614,51 @@ script = ExtResource("4_3ovsr")
 [node name="gear2" parent="Node3D" instance=ExtResource("7_4xg86")]
 script = ExtResource("4_uqeha")
 
-[node name="Node3D" type="Node3D" parent="Node3D"]
-transform = Transform3D(0.7071067, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, 0.7071067, -2.5, -2, 2)
+[node name="Environment" type="Node3D" parent="Node3D"]
 
-[node name="Camera3D" type="Camera3D" parent="Node3D/Node3D"]
-transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 6, 5)
-fov = 77.4
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Node3D/Environment"]
 environment = SubResource("Environment_ob46e")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Node3D"]
-transform = Transform3D(-0.6450097, 0.69607306, -0.31534886, -0.7512102, -0.65325075, 0.09458568, -0.14016338, 0.2979021, 0.9442502, 0, 0, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Node3D/Environment"]
+transform = Transform3D(-0.6450097, 0.696073, -0.31534895, -0.7512102, -0.65325093, 0.094585806, -0.14016338, 0.2979021, 0.9442503, 0, 0, 0)
 light_energy = 0.25
 shadow_enabled = true
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.1171799, 0)
 mesh = SubResource("PlaneMesh_uqeha")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_thkx5")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Node3D"]
+[node name="OmniLight3D" type="OmniLight3D" parent="Node3D/Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12621379, 0, 0)
 light_color = Color(0.20787942, 0.35965118, 0.99997276, 1)
 light_energy = 5.0
 
-[node name="OmniLight3D2" type="OmniLight3D" parent="Node3D"]
+[node name="OmniLight3D2" type="OmniLight3D" parent="Node3D/Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39643145, 1.5006003, 0)
 light_color = Color(0.85272205, 0.803235, 0.63382775, 1)
 light_energy = 0.161
 shadow_enabled = true
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D/Environment"]
 transform = Transform3D(1, 0, 0, 0, 0.9998552, 0.017016139, 0, -0.017016139, 0.9998552, 0, 0, -13.477578)
 mesh = SubResource("BoxMesh_4xg86")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_thkx5")
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D"]
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D/Environment"]
 transform = Transform3D(1, 0, 0, 0, 0.9998552, 0.017016139, 0, -0.017016139, 0.9998552, 0, 8.71793, 0)
 mesh = SubResource("BoxMesh_4xg86")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_thkx5")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D/Environment"]
 transform = Transform3D(1, 0, 0, 0, 0.9998552, 0.017016139, 0, -0.017016139, 0.9998552, -13.0387535, 0, 0)
 mesh = SubResource("BoxMesh_4xg86")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_thkx5")
+
+[node name="Camera3D" type="Camera3D" parent="Node3D/Environment"]
+transform = Transform3D(0.70710677, -0.5, 0.5, 0, 0.7071068, 0.70710677, -0.70710677, -0.5, 0.5, 1.0355334, 4, 5.5355334)
+fov = 77.4

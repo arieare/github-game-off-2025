@@ -1,26 +1,23 @@
-[gd_scene load_steps=40 format=3 uid="uid://c7auuy8faw3do"]
+[gd_scene load_steps=37 format=3 uid="uid://c7auuy8faw3do"]
 
 [ext_resource type="Script" uid="uid://b7wovh0t2itor" path="res://modules/track/track_renderer_3d.gd" id="1_66fm1"]
 [ext_resource type="Script" uid="uid://dw0k251mokf2t" path="res://scenes/sim_3d/sim_3d.gd" id="1_qbjwp"]
 [ext_resource type="Resource" uid="uid://dhvdn8clqrgbi" path="res://assets/tracks/basic_loop.tres" id="2_8rtlt"]
+[ext_resource type="Script" uid="uid://bwdjxy3410jid" path="res://modules/car/car_blueprint.gd" id="3_cmkbr"]
 [ext_resource type="Script" uid="uid://boxndawm4vmgs" path="res://modules/simulation/simulation_controller.gd" id="4_40j5w"]
+[ext_resource type="Resource" uid="uid://bravlf5jh0il3" path="res://assets/cars/magnum_saber.tres" id="4_yamrh"]
 [ext_resource type="Shader" uid="uid://d15ccd7um3ja1" path="res://assets/shader/tilt_shift.gdshader" id="5_7pner"]
 [ext_resource type="FontFile" uid="uid://dgcockbmef8kw" path="res://assets/font/RacingSansOne-Regular.ttf" id="6_67n6g"]
 [ext_resource type="FontFile" uid="uid://c4ds4nrjv5wpv" path="res://assets/font/Inter-Medium.otf" id="7_gm3vh"]
 [ext_resource type="ArrayMesh" uid="uid://3gkva8b8ypha" path="res://assets/model/environment/plant_bushSmall.obj" id="9_pfj6h"]
-[ext_resource type="Script" uid="uid://cnyx770l7mts6" path="res://modules/car/car_component.gd" id="9_s4ecn"]
-[ext_resource type="Script" uid="uid://ckb8ujhpc38gl" path="res://modules/spareparts/motor/motor_hyper_dash_3.gd" id="10_3gsmu"]
 [ext_resource type="Script" uid="uid://4mn646pcobam" path="res://scenes/sim_3d/sim_ui_3d.gd" id="10_pfj6h"]
-[ext_resource type="Script" uid="uid://c58jhk64ii2y0" path="res://modules/spareparts/body/body_lightweight_carbon.gd" id="10_pot30"]
 [ext_resource type="ArrayMesh" uid="uid://curlx4dl13mkf" path="res://assets/model/environment/plant_bushTriangle.obj" id="10_pt0l3"]
-[ext_resource type="Script" uid="uid://kq0pff0xhghq" path="res://modules/spareparts/roller/roller_standard_kit.gd" id="11_3gsmu"]
-[ext_resource type="Script" uid="uid://dn33s4el2mvpf" path="res://modules/spareparts/battery/battery_wildcard.gd" id="12_rmpwp"]
 [ext_resource type="ArrayMesh" uid="uid://ctljda5xyeps1" path="res://assets/model/environment/stone_largeF.obj" id="12_st2ln"]
-[ext_resource type="Script" uid="uid://8g8uxromlya1" path="res://modules/spareparts/wheel/wheel_standard_kit.gd" id="13_3gsmu"]
 [ext_resource type="ArrayMesh" uid="uid://bi6008iq5ciqm" path="res://assets/model/environment/tree_cone.obj" id="13_pfj6h"]
 [ext_resource type="Texture2D" uid="uid://byvph1xprsher" path="res://assets/ui/ic_car.png" id="13_pt0l3"]
 [ext_resource type="Script" uid="uid://ccdjulgenb5hh" path="res://scenes/sim_3d/start_machine_button.gd" id="18_4ey6a"]
 [ext_resource type="Shader" uid="uid://dx8jkuhw2uv4s" path="res://assets/shader/vignette.gdshader" id="21_viiki"]
+[ext_resource type="FontFile" uid="uid://3xyu1o5n7ywl" path="res://assets/font/iAWriterMonoS-Regular.ttf" id="22_l4ecu"]
 
 [sub_resource type="Gradient" id="Gradient_mf771"]
 interpolation_color_space = 2
@@ -144,11 +141,11 @@ shader_parameter/vignette_color = Color(0.87692463, 0.87692463, 0.87692463, 1)
 script = ExtResource("4_40j5w")
 metadata/_custom_type_script = "uid://boxndawm4vmgs"
 
-[node name="Simulation" type="Node3D" parent="." node_paths=PackedStringArray("renderer", "sim", "car_build")]
+[node name="Simulation" type="Node3D" parent="." node_paths=PackedStringArray("renderer", "sim_controller")]
 script = ExtResource("1_qbjwp")
 renderer = NodePath("TrackRenderer3D")
-sim = NodePath("../SimulationController")
-car_build = NodePath("../Car/CarComponent")
+sim_controller = NodePath("../SimulationController")
+cars = Array[ExtResource("3_cmkbr")]([ExtResource("4_yamrh")])
 
 [node name="Camera3D" type="Camera3D" parent="Simulation"]
 transform = Transform3D(0.94203734, -0.16166176, 0.29399192, -0.23351073, 0.31327865, 0.9205049, -0.24091184, -0.9358002, 0.25737044, 2.6, 4, 2.1)
@@ -239,34 +236,34 @@ light_color = Color(0.8658815, 0.8658815, 0.8658814, 1)
 light_energy = 0.25
 shadow_enabled = true
 
-[node name="Car" type="Node" parent="."]
-
-[node name="CarComponent" type="Node" parent="Car"]
-script = ExtResource("9_s4ecn")
-body_sparepart = ExtResource("10_pot30")
-motor_sparepart = ExtResource("10_3gsmu")
-roller_sparepart = ExtResource("11_3gsmu")
-battery_sparepart = ExtResource("12_rmpwp")
-wheel_sparepart = ExtResource("13_3gsmu")
-metadata/_custom_type_script = "uid://cnyx770l7mts6"
-
-[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("battery_indicator", "controller")]
+[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("sim_controller", "ui_battery_indicator", "ui_timer")]
 script = ExtResource("10_pfj6h")
-battery_indicator = NodePath("Battery")
-controller = NodePath("../SimulationController")
+sim_controller = NodePath("../SimulationController")
+ui_battery_indicator = NodePath("Control/Battery")
+ui_timer = NodePath("Control/Timer")
 
-[node name="BoxContainer" type="BoxContainer" parent="UI"]
-anchors_preset = 1
-anchor_left = 1.0
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = -121.0
-offset_top = 17.0
-offset_right = -22.0
-offset_bottom = 43.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="BoxContainer" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -99.0
+offset_top = -26.0
 grow_horizontal = 0
+grow_vertical = 0
 theme_override_constants/separation = -2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/BoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Control/Title"]
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -279,7 +276,7 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 2
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="UI/BoxContainer"]
+[node name="RichTextLabel2" type="RichTextLabel" parent="UI/Control/Title"]
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -292,29 +289,39 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 2
 
-[node name="Telemetry" type="RichTextLabel" parent="UI"]
-offset_left = 239.0
-offset_top = 596.0
-offset_right = 1130.0
-offset_bottom = 637.0
+[node name="Telemetry" type="RichTextLabel" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -166.0
+offset_top = -153.0
+offset_bottom = 153.0
+grow_horizontal = 0
+grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = ExtResource("7_gm3vh")
 text = "telemetry texts"
 
-[node name="StartButtonGroup" type="BoxContainer" parent="UI"]
+[node name="StartButtonGroup" type="BoxContainer" parent="UI/Control"]
+layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -99.0
+offset_top = 509.0
 offset_right = 197.0
+offset_bottom = 608.0
 grow_vertical = 0
 theme = SubResource("Theme_i725u")
 
-[node name="Battery" type="TextureProgressBar" parent="UI"]
+[node name="Battery" type="TextureProgressBar" parent="UI/Control"]
+layout_mode = 0
 offset_left = 33.0
-offset_top = 520.0
+offset_top = 401.0
 offset_right = 75.0
-offset_bottom = 640.0
+offset_bottom = 521.0
 step = 0.1
 allow_greater = true
 fill_mode = 3
@@ -322,18 +329,73 @@ texture_under = SubResource("GradientTexture2D_pfj6h")
 texture_over = SubResource("GradientTexture2D_pt0l3")
 texture_progress = SubResource("GradientTexture2D_s0s05")
 
-[node name="CheckButton" type="CheckButton" parent="UI" node_paths=PackedStringArray("sim", "controller3d")]
-offset_left = 93.0
-offset_top = 587.0
-offset_right = 169.0
-offset_bottom = 631.0
+[node name="CheckButton" type="CheckButton" parent="UI/Control" node_paths=PackedStringArray("sim", "controller3d")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -38.0
+offset_top = -44.0
+offset_right = 38.0
+grow_horizontal = 2
+grow_vertical = 0
 script = ExtResource("18_4ey6a")
-sim = NodePath("../../SimulationController")
-controller3d = NodePath("../../Simulation")
-car_id = "rapidash"
+sim = NodePath("../../../SimulationController")
+controller3d = NodePath("../../../Simulation")
+car_id = "player"
 
-[node name="TextureButton" type="TextureButton" parent="UI"]
+[node name="Timer" type="RichTextLabel" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 193.0
+grow_vertical = 0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("22_l4ecu")
+theme_override_font_sizes/normal_font_size = 24
+text = "00:00:00"
+fit_content = true
+scroll_following = true
+
+[node name="TryNum" type="RichTextLabel" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -124.0
+offset_right = 193.0
+offset_bottom = -84.0
+grow_vertical = 0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "Try
+"
+fit_content = true
+scroll_following = true
+
+[node name="TryNum2" type="RichTextLabel" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+offset_right = 193.0
+offset_bottom = -48.0
+grow_vertical = 0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("6_67n6g")
+theme_override_font_sizes/normal_font_size = 40
+text = "5"
+fit_content = true
+scroll_following = true
+
+[node name="TextureButton" type="TextureButton" parent="UI/Control"]
 modulate = Color(0.13464913, 0.1346491, 0.1346491, 1)
+layout_mode = 0
 offset_left = 1065.0
 offset_top = 561.0
 offset_right = 1129.0

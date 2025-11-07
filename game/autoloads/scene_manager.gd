@@ -9,13 +9,6 @@ var scene_data: Dictionary = {
 	&"simulation": preload("res://scenes/sim_3d/sim_3d.tscn"),
 }
 
-func _ready() -> void:
-	await get_tree().process_frame
-	if main_scene != null:
-		change_scene_to(&"main_menu")
-	else:
-		push_error("main scene not found")
-
 func change_scene_to(scene_id: StringName) -> void:
 	if current_scene != null and main_scene.get_child_count() > 0:
 		main_scene.get_child(0).queue_free()
