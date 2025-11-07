@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://dx13debmafo3q"]
 
 [ext_resource type="PackedScene" uid="uid://csbxfrva4uedg" path="res://assets/model/car/body/spoiler.glb" id="1_5fpbc"]
-[ext_resource type="Script" uid="uid://hfg6jxgxhwso" path="res://modules/car_builder/car_builder.gd" id="1_l6iho"]
+[ext_resource type="Script" uid="uid://hfg6jxgxhwso" path="res://scenes/car_builder/car_builder.gd" id="1_l6iho"]
 [ext_resource type="ArrayMesh" uid="uid://dfqwav1t6nv3c" path="res://assets/model/car/body/Untitled.obj" id="2_l6iho"]
 [ext_resource type="Script" uid="uid://caqswnuau7vux" path="res://components/component_pickable_3d.gd" id="4_ae11m"]
-[ext_resource type="Script" uid="uid://b334wtbk43hu" path="res://modules/car_builder/car_builder_cam.gd" id="4_ppbh7"]
+[ext_resource type="Script" uid="uid://b334wtbk43hu" path="res://scenes/car_builder/car_builder_cam.gd" id="4_ppbh7"]
 [ext_resource type="ArrayMesh" uid="uid://dc8uyg8ssqmfe" path="res://assets/model/car/motor/spoiler.obj" id="5_f07mb"]
 [ext_resource type="Shader" uid="uid://dx8jkuhw2uv4s" path="res://assets/shader/vignette.gdshader" id="6_c8ap8"]
 

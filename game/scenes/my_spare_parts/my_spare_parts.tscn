@@ -1,0 +1,141 @@
+[gd_scene load_steps=5 format=3 uid="uid://dn1mdfvjowpvd"]
+
+[ext_resource type="Script" uid="uid://by8b4w02i8ffn" path="res://scenes/my_spare_parts/my_spare_parts.gd" id="1_iwovb"]
+[ext_resource type="Script" uid="uid://cv33jac2vv3r" path="res://scenes/my_spare_parts/cam_gymball.gd" id="2_k20k8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iwovb"]
+size = Vector3(100, 10, 0.1)
+
+[sub_resource type="Environment" id="Environment_iwovb"]
+fog_enabled = true
+
+[node name="MySpareParts" type="Node" node_paths=PackedStringArray("spare_part_tab", "chassis_tab", "body_tab", "motor_tab", "roller_tab", "wheel_tab", "description_box", "btn_back", "preview_node")]
+script = ExtResource("1_iwovb")
+spare_part_tab = NodePath("UI/Control/TabContainer")
+chassis_tab = NodePath("UI/Control/TabContainer/Chassis")
+body_tab = NodePath("UI/Control/TabContainer/Body")
+motor_tab = NodePath("UI/Control/TabContainer/Motor")
+roller_tab = NodePath("UI/Control/TabContainer/Roller")
+wheel_tab = NodePath("UI/Control/TabContainer/Wheel")
+description_box = NodePath("UI/Control/InformationPanel/ItemInfo")
+btn_back = NodePath("UI/Control/TopBar/ButtonBack")
+preview_node = NodePath("Preview")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.7086231, 0.7055872, 0, -0.7055872, -0.7086231, 0, 0, 0)
+
+[node name="CamGymball" type="Node3D" parent="." node_paths=PackedStringArray("static_collision_interface")]
+script = ExtResource("2_k20k8")
+static_collision_interface = NodePath("Camera3D/CameraInteraction")
+
+[node name="Camera3D" type="Camera3D" parent="CamGymball"]
+projection = 1
+size = 5.0
+
+[node name="CameraInteraction" type="StaticBody3D" parent="CamGymball/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25691807)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CamGymball/Camera3D/CameraInteraction"]
+shape = SubResource("BoxShape3D_iwovb")
+debug_color = Color(0.92831075, 3.4076573e-05, 0.6631817, 1)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_iwovb")
+
+[node name="Preview" type="Node3D" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TabContainer" type="TabContainer" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 42.0
+offset_right = 318.0
+grow_vertical = 2
+tab_alignment = 1
+current_tab = 0
+
+[node name="Motor" type="PanelContainer" parent="UI/Control/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Motor"]
+layout_mode = 2
+columns = 5
+
+[node name="Body" type="PanelContainer" parent="UI/Control/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Body"]
+layout_mode = 2
+columns = 5
+
+[node name="Chassis" type="PanelContainer" parent="UI/Control/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Chassis"]
+layout_mode = 2
+columns = 5
+
+[node name="Roller" type="PanelContainer" parent="UI/Control/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Roller"]
+layout_mode = 2
+columns = 5
+
+[node name="Wheel" type="PanelContainer" parent="UI/Control/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Wheel"]
+layout_mode = 2
+columns = 5
+
+[node name="TopBar" type="PanelContainer" parent="UI/Control"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="ButtonBack" type="Button" parent="UI/Control/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "< Back"
+
+[node name="InformationPanel" type="PanelContainer" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -151.0
+offset_right = 388.0
+offset_bottom = -37.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ItemInfo" type="RichTextLabel" parent="UI/Control/InformationPanel"]
+layout_mode = 2
+bbcode_enabled = true
+text = "The quick brown fox"

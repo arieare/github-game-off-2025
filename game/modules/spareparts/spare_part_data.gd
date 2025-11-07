@@ -15,41 +15,53 @@ static var sparepart: Dictionary = {
 		"name": "Motor Standard Kit",
 		"type": SparePartType.MOTOR,
 		"source-path": "res://modules/spareparts/motor/motor_standard_kit.gd",
-		"mesh-path": "res://assets/model/car/motor/spoiler.obj"
+		"mesh-path": "res://assets/model/car/motor/spoiler.obj",
+		"description": "Common motors from out-of-box kit.",
+		"icon-path": "res://assets/icon.svg",
 	},
 	"motor_hyper_dash_3": {
 		"id": "motor_hyper_dash_3",
 		"name": "Motor Hyper Dash 3",
 		"type": SparePartType.MOTOR,
 		"source-path": "res://modules/spareparts/motor/motor_hyper_dash_3.gd",
-		"mesh-path": "res://assets/model/car/motor/spoiler.obj"
+		"mesh-path": "res://assets/model/car/motor/spoiler.obj",
+		"description": "Faster motor, common for racing purpose.",
+		"icon-path": "res://assets/icon.svg",
 	},
 	"battery_lite": {
 		"id": "battery_lite",
 		"name": "Battery Lite",
 		"type": SparePartType.BATTERY,
 		"source-path": "res://modules/spareparts/battery/battery_lite.gd",
-		"mesh-path": "res://assets/model/car/motor/spoiler.obj"
+		"mesh-path": "res://assets/model/car/motor/spoiler.obj",
+		"description": "Smaller battery that is quick to charge.",
+		"icon-path": "res://assets/icon.svg",
 	},
 	"body_standard_kit": {
 		"id": "body_standard_kit",
 		"name": "Body Standard Kit",
 		"type": SparePartType.BODY,
 		"source-path": "res://modules/spareparts/body/body_standard_kit.gd",
-		"mesh-path": "res://assets/model/car/motor/spoiler.obj"
+		"mesh-path": "res://assets/model/car/motor/spoiler.obj",
+		"description": "Common battery from out-of-box kit",
+		"icon-path": "res://assets/icon.svg",
 	},
 	"wheel_standard_kit": {
 		"id": "wheel_standard_kit",
 		"name": "Wheel Standard Kit",
 		"type": SparePartType.WHEEL,
 		"source-path": "res://modules/spareparts/wheel/wheel_standard_kit.gd",
-		"mesh-path": "res://assets/model/car/motor/spoiler.obj"
+		"mesh-path": "res://assets/model/car/motor/spoiler.obj",
+		"description": "Common wheels from out-of-box kit",
+		"icon-path": "res://assets/icon.svg",
 	},
 	"roller_standard_kit": {
 		"id": "roller_standard_kit",
 		"name": "Roller Standard Kit",
 		"type": SparePartType.ROLLER,
 		"source-path": "res://modules/spareparts/roller/roller_standard_kit.gd",
-		"mesh-path": "res://assets/model/car/motor/spoiler.obj"
+		"mesh-path": "res://assets/model/car/motor/spoiler.obj",
+		"description": "Common wheels from out-of-box kit",
+		"icon-path": "res://assets/icon.svg",
 	}
 }

@@ -15,16 +15,14 @@ var _pending_auto_start: bool = false
 var _car_builder: CarComponent = null
 
 func _ready() -> void:
-	# 1) Build the track once in the renderer (keeps visuals + path in sync)
+	
+	# Build the track once in the renderer (keeps visuals + path in sync)
 	renderer.set_track_model(renderer.track)               # uses exported TrackBlueprint
-	# Share the *same* TrackModel instance with the sim_controller to avoid drift
+	# share the *same* TrackModel instance with the sim_controller to avoid drift
 	sim_controller.set_track_model(renderer.track_model)
-	cam_3d.global_position = renderer.get_track_center(renderer.track)
-	cam_3d.rotation_degrees.x = -75.0
-	cam_3d.global_position.y = 5.0
-	cam_3d.global_position.z += 1.5
-	
-	
+	# setup camera
+	_setup_camera(renderer.track)
+
 	_pending_auto_start = auto_start
 
 	if not _initialize_car_builder():
@@ -92,3 +90,9 @@ func _initialize_car_builder() -> bool:
 	_car_builder.name = "RuntimeCarBuilder"
 	add_child(_car_builder)
 	return _car_builder != null
+
+func _setup_camera(on_track: TrackBlueprint) -> void:
+	cam_3d.global_position = renderer.get_track_center(on_track)
+	cam_3d.rotation_degrees.x = -75.0
+	cam_3d.global_position.y = 5.0
+	cam_3d.global_position.z += 1.5	

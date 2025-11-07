@@ -444,11 +444,12 @@ size = Vector3(20, 10, 20)
 
 [node name="MainMenu" type="Node"]
 
-[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("button_quit", "button_start", "button_options")]
+[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("button_quit", "button_start", "button_options", "button_my_spare_parts")]
 script = ExtResource("1_wem23")
 button_quit = NodePath("Control/Menu/ButtonQuit")
 button_start = NodePath("Control/Menu/ButtonStart")
 button_options = NodePath("Control/Menu/ButtonOption")
+button_my_spare_parts = NodePath("Control/Menu/ButtonSpareparts")
 
 [node name="Control" type="Control" parent="UI"]
 layout_mode = 3
