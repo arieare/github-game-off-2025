@@ -31,7 +31,9 @@ var _compiler: TrackCompiler = TrackCompiler.new()
 var track_model: TrackModel
 var path: Path3D
 var curve := Curve3D.new()
-
+var _track_bounds_min: Vector3 = Vector3.ZERO
+var _track_bounds_max: Vector3 = Vector3.ZERO
+var _has_track_bounds: bool = false
 # car_id -> nodes
 var followers := {}
 var lane_offsets_cache: Array[float] = []
@@ -65,6 +67,9 @@ func set_track_model(blueprint: TrackBlueprint) -> void:
 
 func clear() -> void:
 	curve.clear_points()
+	_track_bounds_min = Vector3.ZERO
+	_track_bounds_max = Vector3.ZERO
+	_has_track_bounds = false
 	for c in lane_csgs:
 		c.queue_free()
 	lane_csgs.clear()
@@ -210,6 +215,9 @@ func _clear_lane_dividers() -> void:
 func _build_curve_from_model() -> void:
 	curve.clear_points()
 	if track_model == null or track_model.is_empty():
+		_track_bounds_min = Vector3.ZERO
+		_track_bounds_max = Vector3.ZERO
+		_has_track_bounds = false
 		return
 
 	# lanes + meta
@@ -218,33 +226,67 @@ func _build_curve_from_model() -> void:
 	lane_width_m = float(meta.get("lane_width", lane_width_m))
 	start_lane = int(meta.get("start_lane", start_lane))
 
+	var samples := _sample_track_geometry(track_model)
+	var points: Array = samples.get("points", [])
+	var tilts: Array = samples.get("tilts", [])
+
+	# feed Curve3D
+	for i in points.size():
+		curve.add_point(points[i])
+	var point_count := curve.get_point_count()
+	for i in tilts.size():
+		if i >= point_count:
+			break
+		curve.set_point_tilt(i, tilts[i])  # roll around the tangent
+
+	# ensure Path3D has the new curve
+	if path == null:
+		path = Path3D.new()
+		add_child(path)
+	path.curve = curve
+	if bool(samples.get("has_points", false)):
+		_track_bounds_min = samples.get("min", Vector3.ZERO)
+		_track_bounds_max = samples.get("max", Vector3.ZERO)
+		_has_track_bounds = true
+	else:
+		_track_bounds_min = Vector3.ZERO
+		_track_bounds_max = Vector3.ZERO
+		_has_track_bounds = false
+
+func _sample_track_geometry(model: TrackModel) -> Dictionary:
+	var result := {
+		"points": [],
+		"tilts": [],
+		"has_points": false,
+		"min": Vector3(INF, INF, INF),
+		"max": Vector3(-INF, -INF, -INF)
+	}
+	if model == null or model.is_empty():
+		return result
+
 	var pos := Vector3.ZERO
-	var yaw := 0.0   # around Y (up)
-	var pitch := 0.0 # around lateral axis; we keep it as per segment grade
-	var up := Vector3.UP
+	var yaw := 0.0
+	var pitch := 0.0
 
-	var points: Array[Vector3] = []
-	var tilts: Array[float] = []
-
-	for seg in track_model.get_segments():
-		var remaining : float = max(seg.length, 0.0)
+	for seg in model.get_segments():
+		var remaining: float = max(seg.length, 0.0)
 		if remaining <= 0.0:
-			# still stamp a point for labels/debug
-			points.append(pos)
-			tilts.append(seg.bank)
+			(result["points"] as Array).append(pos)
+			(result["tilts"] as Array).append(seg.bank)
+			result["min"] = (result["min"] as Vector3).min(pos)
+			result["max"] = (result["max"] as Vector3).max(pos)
+			result["has_points"] = true
 			continue
 
 		var steps := int(ceil(remaining / max(sample_step, 0.001)))
 		var ds := remaining / float(steps)
-		pitch = seg.grade  # constant inside segment
+		pitch = seg.grade
 		var roll := seg.bank
 
 		for i in steps:
-			# integrate yaw from curvature
 			var dyaw := seg.curvature * ds
 			yaw += dyaw
 
-			# forward tangent from yaw+pitch (spherical-ish)
 			var fwd := Vector3(
 				cos(pitch) * cos(yaw),
 				sin(pitch),
@@ -253,20 +295,13 @@ func _build_curve_from_model() -> void:
 
 			pos += fwd * (ds * m_to_units)
 
-			points.append(pos)
-			tilts.append(roll)
+			(result["points"] as Array).append(pos)
+			(result["tilts"] as Array).append(roll)
+			result["min"] = (result["min"] as Vector3).min(pos)
+			result["max"] = (result["max"] as Vector3).max(pos)
+			result["has_points"] = true
 
-	# feed Curve3D
-	for i in points.size():
-		curve.add_point(points[i])
-	for i in tilts.size():
-		curve.set_point_tilt(i, tilts[i])  # roll around the tangent
-
-	# ensure Path3D has the new curve
-	if path == null:
-		path = Path3D.new()
-		add_child(path)
-	path.curve = curve
+	return result
 
 func _rebuild_lane_offsets() -> void:
 	lane_offsets_cache.clear()
@@ -341,6 +376,21 @@ func _refresh_followers_transforms() -> void:
 		# no-op; callers will push fresh snapshots anyway
 		pass
 
+func get_track_center(blueprint: TrackBlueprint = null) -> Vector3:
+	if blueprint != null:
+		var model := _compiler.compile_blueprint(blueprint)
+		if model == null or model.is_empty():
+			return Vector3.ZERO
+		var samples := _sample_track_geometry(model)
+		if bool(samples.get("has_points", false)):
+			var min_point: Vector3 = samples.get("min", Vector3.ZERO)
+			var max_point: Vector3 = samples.get("max", Vector3.ZERO)
+			return (min_point + max_point) * 0.5
+		return Vector3.ZERO
+	if _has_track_bounds:
+		return (_track_bounds_min + _track_bounds_max) * 0.5
+	return Vector3.ZERO
+
 func _get_lane_color(index: int) -> Color:
 	if lane_colors.is_empty():
 		return Color(0.3, 0.3, 0.3, 1.0)
@@ -407,7 +457,7 @@ func _ensure_marker_follow(is_start: bool) -> PathFollow3D:
 		follow = _finish_marker_follow
 	if follow != null and follow.is_inside_tree():
 		return follow
-	if path == null:
+	if path == null or curve.get_point_count() < 2:
 		return null
 	follow = PathFollow3D.new()
 	path.add_child(follow)

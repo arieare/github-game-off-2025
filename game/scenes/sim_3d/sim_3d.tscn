@@ -141,23 +141,23 @@ shader_parameter/vignette_color = Color(0.87692463, 0.87692463, 0.87692463, 1)
 script = ExtResource("4_40j5w")
 metadata/_custom_type_script = "uid://boxndawm4vmgs"
 
-[node name="Simulation" type="Node3D" parent="." node_paths=PackedStringArray("renderer", "sim_controller")]
-script = ExtResource("1_qbjwp")
-renderer = NodePath("TrackRenderer3D")
-sim_controller = NodePath("../SimulationController")
-cars = Array[ExtResource("3_cmkbr")]([ExtResource("4_yamrh")])
-
-[node name="Camera3D" type="Camera3D" parent="Simulation"]
-transform = Transform3D(0.94203734, -0.16166176, 0.29399192, -0.23351073, 0.31327865, 0.9205049, -0.24091184, -0.9358002, 0.25737044, 2.6, 4, 2.1)
-current = true
-fov = 42.0
-size = 9.003
-
-[node name="TrackRenderer3D" type="Node3D" parent="Simulation"]
+[node name="TrackRenderer3D" type="Node3D" parent="."]
 script = ExtResource("1_66fm1")
 start_marker_color = Color(0.9490196, 0, 0.18039216, 1)
 finish_marker_color = Color(0.13333334, 0.33333334, 0.972549, 1)
 track = ExtResource("2_8rtlt")
+
+[node name="Simulation" type="Node3D" parent="." node_paths=PackedStringArray("renderer", "sim_controller", "cam_3d")]
+script = ExtResource("1_qbjwp")
+renderer = NodePath("../TrackRenderer3D")
+sim_controller = NodePath("../SimulationController")
+cars = Array[ExtResource("3_cmkbr")]([ExtResource("4_yamrh")])
+cam_3d = NodePath("Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="Simulation"]
+current = true
+fov = 42.0
+size = 9.003
 
 [node name="Environment" type="Node3D" parent="Simulation"]
 

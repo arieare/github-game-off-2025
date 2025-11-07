@@ -8,6 +8,7 @@ signal car_assembled(car: CarModel)
 @export var cars: Array[CarBlueprint] = []
 @export var selected_car_index: int = 0
 @export var auto_start: bool = false
+@export var cam_3d: Camera3D
 var car_array: Array[CarModel] = []
 const PLAYER_CAR_ID := "player"
 var _pending_auto_start: bool = false
@@ -18,6 +19,12 @@ func _ready() -> void:
 	renderer.set_track_model(renderer.track)               # uses exported TrackBlueprint
 	# Share the *same* TrackModel instance with the sim_controller to avoid drift
 	sim_controller.set_track_model(renderer.track_model)
+	cam_3d.global_position = renderer.get_track_center(renderer.track)
+	cam_3d.rotation_degrees.x = -75.0
+	cam_3d.global_position.y = 5.0
+	cam_3d.global_position.z += 1.5
+	
+	
 	_pending_auto_start = auto_start
 
 	if not _initialize_car_builder():
@@ -31,7 +38,7 @@ func _ready() -> void:
 	
 	# 3) Stream sim_controller states into the renderer (adapter to drop the first arg)
 	sim_controller.state_updated.connect(func(_car_id, state: Dictionary) -> void:
-		state.lane = 3
+		state.lane = 1
 		renderer.update_car_snapshot(state)
 	)
 
