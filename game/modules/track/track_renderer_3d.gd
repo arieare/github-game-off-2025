@@ -9,6 +9,19 @@ class_name TrackRenderer3D
 @export var draw_per_lane: bool = true
 @export var lane_seam_m: float = 0.002  # small gap to avoid z-fighting between lanes
 @export var divider_width_m: float = 0.006
+@export var lane_colors: Array[Color] = [
+	Color(0.34, 0.34, 0.34, 1.0),
+	Color(0.22, 0.22, 0.22, 1.0),
+]
+@export var show_start_marker: bool = true
+@export var show_finish_marker: bool = true
+@export var start_marker_color: Color = Color(0.95, 0.44, 0.18, 1.0)
+@export var finish_marker_color: Color = Color(0.2, 0.85, 0.36, 1.0)
+@export var start_marker_texture: Texture2D
+@export var finish_marker_texture: Texture2D
+@export var marker_length_m: float = 0.08
+@export var marker_extra_width_m: float = 0.02
+@export var marker_height_offset_m: float = 0.003
 var lane_csgs: Array[CSGPolygon3D] = []
 var divider_csgs: Array[CSGPolygon3D] = []
 var _compiler: TrackCompiler = TrackCompiler.new()
@@ -23,6 +36,10 @@ var curve := Curve3D.new()
 var followers := {}
 var lane_offsets_cache: Array[float] = []
 var lane_count := 1
+var _start_marker_follow: PathFollow3D = null
+var _finish_marker_follow: PathFollow3D = null
+var _start_marker_mesh: MeshInstance3D = null
+var _finish_marker_mesh: MeshInstance3D = null
 
 func _ready() -> void:
 	if path == null:
@@ -40,6 +57,10 @@ func set_track_model(blueprint: TrackBlueprint) -> void:
 	if draw_per_lane:
 		_ensure_lane_meshes()
 		_ensure_lane_dividers()
+	else:
+		_clear_lane_meshes()
+		_clear_lane_dividers()
+	_update_start_finish_markers()
 	_refresh_followers_transforms()
 
 func clear() -> void:
@@ -56,6 +77,14 @@ func clear() -> void:
 	for f in followers.values():
 		f.queue_free()
 	followers.clear()
+	if _start_marker_follow:
+		_start_marker_follow.queue_free()
+		_start_marker_follow = null
+		_start_marker_mesh = null
+	if _finish_marker_follow:
+		_finish_marker_follow.queue_free()
+		_finish_marker_follow = null
+		_finish_marker_mesh = null
 
 var track_csg: CSGPolygon3D
 
@@ -126,12 +155,13 @@ func _ensure_lane_meshes() -> void:
 		c.use_collision = false
 		var mat := StandardMaterial3D.new()
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL
-		# Alternate subtle tones per lane
-		if (i % 2) == 0:
-			mat.albedo_color = Color(0.34, 0.34, 0.34, 1.0)
-		else:
-			mat.albedo_color = Color(0.22, 0.22, 0.22, 1.0)
+		mat.albedo_color = _get_lane_color(i)
 		c.material = mat
+
+func _clear_lane_meshes() -> void:
+	for c in lane_csgs:
+		c.queue_free()
+	lane_csgs.clear()
 
 func _ensure_lane_dividers() -> void:
 	# Render thin dividers between lanes (lane_count - 1 bands)
@@ -171,6 +201,11 @@ func _ensure_lane_dividers() -> void:
 		mat.shading_mode = BaseMaterial3D.SHADING_MODE_PER_PIXEL
 		mat.albedo_color = Color(0.95, 0.95, 0.95, 1.0)  # light stripe
 		d.material = mat
+
+func _clear_lane_dividers() -> void:
+	for d in divider_csgs:
+		d.queue_free()
+	divider_csgs.clear()
 
 func _build_curve_from_model() -> void:
 	curve.clear_points()
@@ -305,3 +340,102 @@ func _refresh_followers_transforms() -> void:
 	for id in followers.keys():
 		# no-op; callers will push fresh snapshots anyway
 		pass
+
+func _get_lane_color(index: int) -> Color:
+	if lane_colors.is_empty():
+		return Color(0.3, 0.3, 0.3, 1.0)
+	return lane_colors[index % lane_colors.size()]
+
+func _update_start_finish_markers() -> void:
+	if track_model == null or path == null:
+		_disable_marker(true)
+		_disable_marker(false)
+		return
+	var start_s := _find_segment_position("START")
+	var finish_s := _find_segment_position("FINISH")
+	_update_marker(true, show_start_marker, start_s, start_marker_color, start_marker_texture)
+	_update_marker(false, show_finish_marker, finish_s, finish_marker_color, finish_marker_texture)
+
+func _find_segment_position(tag: String) -> float:
+	if track_model == null:
+		return -1.0
+	for seg in track_model.get_segments():
+		if String(seg.type) == tag:
+			return seg.s_start
+	return -1.0
+
+func _update_marker(is_start: bool, enabled: bool, s_pos: float, color: Color, texture: Texture2D) -> void:
+	if not enabled or s_pos < 0.0:
+		_disable_marker(is_start)
+		return
+	var follow := _ensure_marker_follow(is_start)
+	if follow == null:
+		return
+	var mesh: MeshInstance3D = null
+	if follow.get_child_count() > 0:
+		mesh = follow.get_child(0) as MeshInstance3D
+	if mesh == null:
+		mesh = _create_marker_mesh(follow)
+	var plane := mesh.mesh
+	var total_width : float = max(lane_width_m * float(max(lane_count, 1)) + marker_extra_width_m, lane_width_m) * m_to_units
+	var length : float = max(marker_length_m, 0.01) * m_to_units
+	if plane is PlaneMesh:
+		(plane as PlaneMesh).size = Vector2(total_width, length)
+	var marker_offset := Vector3(0.0, marker_height_offset_m * m_to_units, 0.0)
+	var mesh_transform := mesh.transform
+	mesh_transform.origin = marker_offset
+	mesh.transform = mesh_transform
+	mesh.material_override = _make_marker_material(color, texture)
+	follow.progress = clamp(s_pos * m_to_units, 0.0, track_model.get_total_length() * m_to_units)
+	follow.visible = true
+	mesh.visible = true
+
+func _disable_marker(is_start: bool) -> void:
+	var follow: PathFollow3D = null
+	if is_start:
+		follow = _start_marker_follow
+	else:
+		follow = _finish_marker_follow
+	if follow != null:
+		follow.visible = false
+
+func _ensure_marker_follow(is_start: bool) -> PathFollow3D:
+	var follow: PathFollow3D = null
+	if is_start:
+		follow = _start_marker_follow
+	else:
+		follow = _finish_marker_follow
+	if follow != null and follow.is_inside_tree():
+		return follow
+	if path == null:
+		return null
+	follow = PathFollow3D.new()
+	path.add_child(follow)
+	follow.rotation_mode = PathFollow3D.ROTATION_ORIENTED
+	var mesh := _create_marker_mesh(follow)
+	if is_start:
+		_start_marker_follow = follow
+		_start_marker_mesh = mesh
+	else:
+		_finish_marker_follow = follow
+		_finish_marker_mesh = mesh
+	return follow
+
+func _create_marker_mesh(parent: PathFollow3D) -> MeshInstance3D:
+	var mesh := MeshInstance3D.new()
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(0.1, 0.1)
+	mesh.mesh = plane
+	parent.add_child(mesh)
+	return mesh
+
+func _make_marker_material(color: Color, texture: Texture2D) -> StandardMaterial3D:
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.albedo_color = color
+	if texture != null:
+		mat.albedo_texture = texture
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	if color.a < 0.999:
+		mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	return mat

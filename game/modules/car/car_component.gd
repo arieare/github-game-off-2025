@@ -10,7 +10,6 @@ const SLOT_WHEEL := "wheel"
 const SLOT_ROLLER := "roller"
 const SLOT_BODY := "body"
 
-#const SparePartData := preload("res://modules/spareparts/spare_part_data.gd")
 const SLOT_TO_BLUEPRINT_KEY := {
 	SLOT_BODY: "body",
 	SLOT_MOTOR: "motor",
@@ -813,11 +812,10 @@ func _parts_to_blueprint_payloads(parts: Array) -> Array:
 func _instantiate_blueprint_part(payload: Dictionary, catalog: Dictionary) -> Node:
 	if payload.is_empty():
 		return null
+	var script_path: String = String(payload.get("script", ""))
 	var part_id: String = String(payload.get("id", ""))
-	if part_id == "":
-		push_warning("CarComponent: Blueprint payload missing part id; skipping.")
-		return null
-	var script_path: String = _lookup_script_path(part_id, catalog)
+	if script_path == "":
+		script_path = _lookup_script_path(part_id, catalog)
 	if script_path == "":
 		push_warning("CarComponent: Unable to resolve script for part id '%s'." % part_id)
 		return null

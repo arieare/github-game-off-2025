@@ -155,6 +155,8 @@ size = 9.003
 
 [node name="TrackRenderer3D" type="Node3D" parent="Simulation"]
 script = ExtResource("1_66fm1")
+start_marker_color = Color(0.9490196, 0, 0.18039216, 1)
+finish_marker_color = Color(0.13333334, 0.33333334, 0.972549, 1)
 track = ExtResource("2_8rtlt")
 
 [node name="Environment" type="Node3D" parent="Simulation"]
@@ -240,7 +242,7 @@ shadow_enabled = true
 script = ExtResource("10_pfj6h")
 sim_controller = NodePath("../SimulationController")
 ui_battery_indicator = NodePath("Control/Battery")
-ui_timer = NodePath("Control/Timer")
+ui_timer = NodePath("Control/UIBottomLeft/Timer")
 
 [node name="Control" type="Control" parent="UI"]
 layout_mode = 3
@@ -346,53 +348,6 @@ sim = NodePath("../../../SimulationController")
 controller3d = NodePath("../../../Simulation")
 car_id = "player"
 
-[node name="Timer" type="RichTextLabel" parent="UI/Control"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 193.0
-grow_vertical = 0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = ExtResource("22_l4ecu")
-theme_override_font_sizes/normal_font_size = 24
-text = "00:00:00"
-fit_content = true
-scroll_following = true
-
-[node name="TryNum" type="RichTextLabel" parent="UI/Control"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -124.0
-offset_right = 193.0
-offset_bottom = -84.0
-grow_vertical = 0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "Try
-"
-fit_content = true
-scroll_following = true
-
-[node name="TryNum2" type="RichTextLabel" parent="UI/Control"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -100.0
-offset_right = 193.0
-offset_bottom = -48.0
-grow_vertical = 0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = ExtResource("6_67n6g")
-theme_override_font_sizes/normal_font_size = 40
-text = "5"
-fit_content = true
-scroll_following = true
-
 [node name="TextureButton" type="TextureButton" parent="UI/Control"]
 modulate = Color(0.13464913, 0.1346491, 0.1346491, 1)
 layout_mode = 0
@@ -403,6 +358,51 @@ offset_bottom = 625.0
 texture_normal = ExtResource("13_pt0l3")
 ignore_texture_size = true
 stretch_mode = 5
+
+[node name="UIBottomLeft" type="BoxContainer" parent="UI/Control"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -104.0
+offset_right = 200.0
+grow_vertical = 0
+alignment = 2
+vertical = true
+
+[node name="Try" type="BoxContainer" parent="UI/Control/UIBottomLeft"]
+layout_mode = 2
+
+[node name="TryLabel" type="RichTextLabel" parent="UI/Control/UIBottomLeft/Try"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "Try
+"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
+
+[node name="TryNum" type="RichTextLabel" parent="UI/Control/UIBottomLeft/Try"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("6_67n6g")
+theme_override_font_sizes/normal_font_size = 40
+text = "5"
+fit_content = true
+scroll_active = false
+
+[node name="Timer" type="RichTextLabel" parent="UI/Control/UIBottomLeft"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("22_l4ecu")
+theme_override_font_sizes/normal_font_size = 24
+text = "00:00:00"
+fit_content = true
+scroll_following = true
 
 [node name="FXTiltShift" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_67n6g")
