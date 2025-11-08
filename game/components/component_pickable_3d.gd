@@ -4,6 +4,7 @@ class_name ComponentPickable3D
 #this should subscribe to some kind of signal to notify it being drag or dropped
 
 @export var entity: Node3D
+@export var pickable_id: String = ""
 
 var mouse_ray_origin: Vector3
 var mouse_ray_direction: Vector3
@@ -28,7 +29,7 @@ func _on_object_picked(component: ComponentPickable3D) -> void:
 		entity.visible = false
 		print("Component picked:", entity)
 
-func _on_object_dropped(component: ComponentPickable3D) -> void:
+func _on_object_dropped(component: ComponentPickable3D, _target: ComponentDroppable3D) -> void:
 	if component == self:
 		is_picked = false
 		entity.visible = true

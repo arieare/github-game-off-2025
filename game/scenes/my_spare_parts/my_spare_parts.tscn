@@ -34,6 +34,7 @@ size = 5.0
 
 [node name="CameraInteraction" type="StaticBody3D" parent="CamGymball/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25691807)
+axis_lock_angular_z = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CamGymball/Camera3D/CameraInteraction"]
 shape = SubResource("BoxShape3D_iwovb")
