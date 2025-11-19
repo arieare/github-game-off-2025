@@ -18,8 +18,8 @@ config/icon="res://assets/icon.svg"
 [autoload]
 
 DragDropController="*res://autoloads/drag_drop_controller.gd"
-SceneManager="*res://autoloads/scene_manager.gd"
-PlayerData="*res://autoloads/player_data.gd"
+SceneManager="*res://game/scene_manager.gd"
+PlayerData="*res://game/player_data.gd"
 
 [display]
 

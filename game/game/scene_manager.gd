@@ -8,6 +8,7 @@ var scene_data: Dictionary = {
 	&"main_menu": preload("res://scenes/main_menu/main_menu.tscn"),
 	&"simulation": preload("res://scenes/sim_3d/sim_3d.tscn"),
 	&"my_spare_parts": preload("res://scenes/my_spare_parts/my_spare_parts.tscn"),
+	&"option_menu": preload("res://scenes/option_menu/option_menu.tscn")
 }
 
 func change_scene_to(scene_id: StringName) -> void:

@@ -1,0 +1,112 @@
+[gd_scene load_steps=11 format=3 uid="uid://bs70g4exjfsr1"]
+
+[ext_resource type="Script" uid="uid://ckqrgahm0mi2" path="res://scenes/option_menu/option_menu.gd" id="1_4ejts"]
+[ext_resource type="Theme" uid="uid://bw64kxghkkw3t" path="res://assets/ui/default_ui.tres" id="1_pke8i"]
+[ext_resource type="FontFile" uid="uid://bk3ontm00dw2v" path="res://assets/font/outfit/Outfit-SemiBold.ttf" id="2_vn666"]
+[ext_resource type="Texture2D" uid="uid://cgklcw8w6l6ud" path="res://assets/icons/ic-arrow-fat-left.svg" id="2_xiwh8"]
+[ext_resource type="FontFile" uid="uid://jyvnyfeslehh" path="res://assets/font/outfit/Outfit-Medium.ttf" id="3_vn666"]
+[ext_resource type="Texture2D" uid="uid://dxrp5pdy77ayk" path="res://assets/icons/ic-headphones.svg" id="4_k8now"]
+[ext_resource type="Texture2D" uid="uid://dqhu8my4i6qbp" path="res://assets/icons/ic-monitor.svg" id="4_ngmpl"]
+[ext_resource type="Texture2D" uid="uid://c3jmiwr7jh0lj" path="res://assets/icons/ic-note.svg" id="6_14rxp"]
+
+[sub_resource type="Gradient" id="Gradient_1b6gl"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.9779369, 0.97793704, 0.9779369, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h68l7"]
+gradient = SubResource("Gradient_1b6gl")
+
+[node name="OptionMenu" type="Node"]
+
+[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("button_back")]
+script = ExtResource("1_4ejts")
+button_back = NodePath("Control/MarginContainer/TopBar/ButtonBack")
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_pke8i")
+
+[node name="BG" type="TextureRect" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_h68l7")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="TopBar" type="FlowContainer" parent="UI/Control/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ButtonBack" type="Button" parent="UI/Control/MarginContainer/TopBar"]
+layout_mode = 2
+theme_type_variation = &"TextButton"
+text = "Back"
+icon = ExtResource("2_xiwh8")
+
+[node name="BoxContainer" type="BoxContainer" parent="UI/Control/MarginContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Control/MarginContainer/BoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+theme_override_fonts/normal_font = ExtResource("2_vn666")
+theme_override_font_sizes/normal_font_size = 64
+text = "Options"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="UI/Control/MarginContainer/BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 16
+vertical = true
+
+[node name="ButtonVolume" type="Button" parent="UI/Control/MarginContainer/BoxContainer/BoxContainer"]
+layout_mode = 2
+text = "VOLUME"
+icon = ExtResource("4_k8now")
+
+[node name="ButtonGraphics" type="Button" parent="UI/Control/MarginContainer/BoxContainer/BoxContainer"]
+layout_mode = 2
+text = "GRAPHICS"
+icon = ExtResource("4_ngmpl")
+
+[node name="ButtonCredits" type="Button" parent="UI/Control/MarginContainer/BoxContainer/BoxContainer"]
+layout_mode = 2
+text = "CREDITS"
+icon = ExtResource("6_14rxp")
+
+[node name="Studio" type="RichTextLabel" parent="UI/Control/MarginContainer/BoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.4935457, 0.4935454, 0.49354553, 1)
+theme_override_fonts/normal_font = ExtResource("3_vn666")
+theme_override_font_sizes/normal_font_size = 24
+text = "JesterSuit Studio Game"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1

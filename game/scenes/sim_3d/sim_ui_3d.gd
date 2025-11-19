@@ -7,7 +7,9 @@ extends CanvasLayer
 @export var ui_timer: RichTextLabel
 
 func _ready() -> void:
-	sim_controller.state_updated.connect(_on_state_updated)
+	var events := sim_controller.get_event_bus() if sim_controller else null
+	if events:
+		events.state_updated.connect(_on_state_updated)
 	#sim_controller.car_finished.connect(_on_car_finished)
 
 func _on_state_updated(car_id:Variant, data: Dictionary) -> void:

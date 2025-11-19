@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://c7auuy8faw3do"]
+[gd_scene load_steps=41 format=3 uid="uid://c7auuy8faw3do"]
 
 [ext_resource type="Script" uid="uid://b7wovh0t2itor" path="res://modules/track/track_renderer_3d.gd" id="1_66fm1"]
 [ext_resource type="Script" uid="uid://dw0k251mokf2t" path="res://scenes/sim_3d/sim_3d.gd" id="1_qbjwp"]
@@ -7,15 +7,17 @@
 [ext_resource type="Script" uid="uid://boxndawm4vmgs" path="res://modules/simulation/simulation_controller.gd" id="4_40j5w"]
 [ext_resource type="Resource" uid="uid://bravlf5jh0il3" path="res://assets/cars/magnum_saber.tres" id="4_yamrh"]
 [ext_resource type="Shader" uid="uid://d15ccd7um3ja1" path="res://assets/shader/tilt_shift.gdshader" id="5_7pner"]
-[ext_resource type="FontFile" uid="uid://dgcockbmef8kw" path="res://assets/font/RacingSansOne-Regular.ttf" id="6_67n6g"]
 [ext_resource type="FontFile" uid="uid://c4ds4nrjv5wpv" path="res://assets/font/Inter-Medium.otf" id="7_gm3vh"]
 [ext_resource type="ArrayMesh" uid="uid://3gkva8b8ypha" path="res://assets/model/environment/plant_bushSmall.obj" id="9_pfj6h"]
 [ext_resource type="Script" uid="uid://4mn646pcobam" path="res://scenes/sim_3d/sim_ui_3d.gd" id="10_pfj6h"]
 [ext_resource type="ArrayMesh" uid="uid://curlx4dl13mkf" path="res://assets/model/environment/plant_bushTriangle.obj" id="10_pt0l3"]
+[ext_resource type="Theme" uid="uid://bw64kxghkkw3t" path="res://assets/ui/default_ui.tres" id="12_85o2c"]
 [ext_resource type="ArrayMesh" uid="uid://ctljda5xyeps1" path="res://assets/model/environment/stone_largeF.obj" id="12_st2ln"]
+[ext_resource type="FontFile" uid="uid://d1xnsqjpe3q7t" path="res://assets/font/tourney/Tourney_Expanded-Black.ttf" id="13_5kkai"]
 [ext_resource type="ArrayMesh" uid="uid://bi6008iq5ciqm" path="res://assets/model/environment/tree_cone.obj" id="13_pfj6h"]
-[ext_resource type="Texture2D" uid="uid://byvph1xprsher" path="res://assets/ui/ic_car.png" id="13_pt0l3"]
+[ext_resource type="FontFile" uid="uid://d0pgb635wn6s" path="res://assets/font/tourney/Tourney-ExtraBoldItalic.ttf" id="17_coyhy"]
 [ext_resource type="Script" uid="uid://ccdjulgenb5hh" path="res://scenes/sim_3d/start_machine_button.gd" id="18_4ey6a"]
+[ext_resource type="FontFile" uid="uid://bk3ontm00dw2v" path="res://assets/font/outfit/Outfit-SemiBold.ttf" id="19_8snin"]
 [ext_resource type="Shader" uid="uid://dx8jkuhw2uv4s" path="res://assets/shader/vignette.gdshader" id="21_viiki"]
 
 [sub_resource type="Gradient" id="Gradient_mf771"]
@@ -85,13 +87,6 @@ adjustment_brightness = 1.03
 adjustment_contrast = 0.59
 adjustment_saturation = 1.31
 
-[sub_resource type="Theme" id="Theme_i725u"]
-default_font = ExtResource("7_gm3vh")
-CheckButton/colors/font_color = Color(0, 0, 0, 1)
-CheckButton/colors/font_hover_color = Color(0.08078321, 0.080783345, 0.08078361, 1)
-CheckButton/colors/font_hover_pressed_color = Color(0.174626, 0.17462596, 0.17462596, 1)
-CheckButton/colors/font_pressed_color = Color(0.11858138, 0.11858138, 0.11858138, 1)
-
 [sub_resource type="Gradient" id="Gradient_s4ecn"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
 
@@ -133,6 +128,20 @@ shader_parameter/outer_radius = 0.9
 shader_parameter/vignette_strength = 0.7
 shader_parameter/dither_strength = 0.03
 shader_parameter/vignette_color = Color(0.87692463, 0.87692463, 0.87692463, 1)
+
+[sub_resource type="Gradient" id="Gradient_85o2c"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0.27450982)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8snin"]
+gradient = SubResource("Gradient_85o2c")
+
+[sub_resource type="Gradient" id="Gradient_5kkai"]
+offsets = PackedFloat32Array(0.0046296297)
+colors = PackedColorArray(0.9764706, 0.9764706, 0.9764706, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_coyhy"]
+gradient = SubResource("Gradient_5kkai")
 
 [node name="Sim3d" type="Node"]
 
@@ -242,8 +251,8 @@ shadow_enabled = true
 [node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("sim_controller", "ui_battery_indicator", "ui_timer")]
 script = ExtResource("10_pfj6h")
 sim_controller = NodePath("../Simulation/SimulationController")
-ui_battery_indicator = NodePath("Control/Battery")
-ui_timer = NodePath("Control/Timer")
+ui_battery_indicator = NodePath("Control/MarginContainer/Battery")
+ui_timer = NodePath("Control/MarginContainer/UITop/Timer")
 
 [node name="Control" type="Control" parent="UI"]
 layout_mode = 3
@@ -252,97 +261,97 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("12_85o2c")
 
-[node name="Timer" type="RichTextLabel" parent="UI/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control"]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -100.0
-offset_right = 100.0
-offset_bottom = 32.0
-grow_horizontal = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/normal_font_size = 24
-text = "00:00:000"
-fit_content = true
-scroll_following = true
-horizontal_alignment = 1
-
-[node name="Title" type="BoxContainer" parent="UI/Control"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -99.0
-offset_top = -26.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_constants/separation = -2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/Control/Title"]
-clip_contents = false
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/default_color = Color(1, 0.25, 0.2624998, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 12
-theme_override_fonts/normal_font = ExtResource("6_67n6g")
-text = "TINY"
-fit_content = true
-scroll_active = false
-horizontal_alignment = 2
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="UI/Control/Title"]
-clip_contents = false
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/default_color = Color(0.19999999, 0.32000005, 1, 1)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 12
-theme_override_fonts/normal_font = ExtResource("6_67n6g")
-text = "GEARS"
-fit_content = true
-scroll_active = false
-horizontal_alignment = 2
-
-[node name="Telemetry" type="RichTextLabel" parent="UI/Control"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -166.0
-offset_top = -153.0
-offset_bottom = 153.0
-grow_horizontal = 0
+grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="UITop" type="BoxContainer" parent="UI/Control/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 1
+
+[node name="Timer" type="RichTextLabel" parent="UI/Control/MarginContainer/UITop"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_fonts/normal_font = ExtResource("13_5kkai")
+theme_override_font_sizes/normal_font_size = 32
+text = "00:00:000"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Logo" type="BoxContainer" parent="UI/Control/MarginContainer/UITop"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/Control/MarginContainer/UITop/Logo"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+color = Color(0.82, 0.37392002, 0.2624, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Control/MarginContainer/UITop/Logo/ColorRect"]
+clip_contents = false
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 10
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("13_5kkai")
+theme_override_font_sizes/normal_font_size = 24
+text = "T"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="ColorRect2" type="ColorRect" parent="UI/Control/MarginContainer/UITop/Logo"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+color = Color(0.3116, 0.43022677, 0.82, 1)
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="UI/Control/MarginContainer/UITop/Logo/ColorRect2"]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 8
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("13_5kkai")
+theme_override_font_sizes/normal_font_size = 24
+text = "G"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Telemetry" type="RichTextLabel" parent="UI/Control/MarginContainer"]
+layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_fonts/normal_font = ExtResource("7_gm3vh")
 text = "telemetry texts"
 
-[node name="StartButtonGroup" type="BoxContainer" parent="UI/Control"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = 509.0
-offset_right = 197.0
-offset_bottom = 608.0
-grow_vertical = 0
-theme = SubResource("Theme_i725u")
-
-[node name="Battery" type="TextureProgressBar" parent="UI/Control"]
-layout_mode = 0
-offset_left = 33.0
-offset_top = 401.0
-offset_right = 75.0
-offset_bottom = 521.0
+[node name="Battery" type="TextureProgressBar" parent="UI/Control/MarginContainer"]
+layout_mode = 2
 step = 10.0
 value = 100.0
 allow_greater = true
@@ -351,50 +360,18 @@ texture_under = SubResource("GradientTexture2D_pfj6h")
 texture_over = SubResource("GradientTexture2D_pt0l3")
 texture_progress = SubResource("GradientTexture2D_s0s05")
 
-[node name="CheckButton" type="CheckButton" parent="UI/Control" node_paths=PackedStringArray("sim", "controller3d")]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -38.0
-offset_top = -44.0
-offset_right = 38.0
-grow_horizontal = 2
-grow_vertical = 0
-script = ExtResource("18_4ey6a")
-sim = NodePath("../../../Simulation/SimulationController")
-controller3d = NodePath("../../../Simulation")
-car_id = "player"
-
-[node name="TextureButton" type="TextureButton" parent="UI/Control"]
-modulate = Color(0.13464913, 0.1346491, 0.1346491, 1)
-layout_mode = 0
-offset_left = 1065.0
-offset_top = 561.0
-offset_right = 1129.0
-offset_bottom = 625.0
-texture_normal = ExtResource("13_pt0l3")
-ignore_texture_size = true
-stretch_mode = 5
-
-[node name="UIBottomLeft" type="BoxContainer" parent="UI/Control"]
+[node name="UIBottom" type="BoxContainer" parent="UI/Control/MarginContainer"]
 custom_minimum_size = Vector2(200, 0)
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -104.0
-offset_right = 200.0
-grow_vertical = 0
-alignment = 2
-vertical = true
-
-[node name="Try" type="BoxContainer" parent="UI/Control/UIBottomLeft"]
 layout_mode = 2
+size_flags_vertical = 8
+alignment = 2
 
-[node name="TryLabel" type="RichTextLabel" parent="UI/Control/UIBottomLeft/Try"]
+[node name="Try" type="BoxContainer" parent="UI/Control/MarginContainer/UIBottom"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="TryLabel" type="RichTextLabel" parent="UI/Control/MarginContainer/UIBottom/Try"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/default_color = Color(0, 0, 0, 1)
@@ -405,15 +382,24 @@ fit_content = true
 scroll_active = false
 vertical_alignment = 1
 
-[node name="TryNum" type="RichTextLabel" parent="UI/Control/UIBottomLeft/Try"]
+[node name="TryNum" type="RichTextLabel" parent="UI/Control/MarginContainer/UIBottom/Try"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = ExtResource("6_67n6g")
+theme_override_fonts/normal_font = ExtResource("17_coyhy")
 theme_override_font_sizes/normal_font_size = 40
 text = "5"
 fit_content = true
 scroll_active = false
+
+[node name="CheckButton" type="CheckButton" parent="UI/Control/MarginContainer/UIBottom" node_paths=PackedStringArray("sim", "controller3d")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+script = ExtResource("18_4ey6a")
+sim = NodePath("../../../../../Simulation/SimulationController")
+controller3d = NodePath("../../../../../Simulation")
+car_id = "player"
 
 [node name="FXTiltShift" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_67n6g")
@@ -430,3 +416,80 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Control" type="Control" parent="PauseMenu"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("12_85o2c")
+
+[node name="BG" type="TextureRect" parent="PauseMenu/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_8snin")
+
+[node name="BG2" type="TextureRect" parent="PauseMenu/Control"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_right = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_coyhy")
+
+[node name="BoxContainer" type="BoxContainer" parent="PauseMenu/Control"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -196.0
+offset_right = 150.0
+offset_bottom = 196.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PauseMenu/Control/BoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+theme_override_fonts/normal_font = ExtResource("19_8snin")
+theme_override_font_sizes/normal_font_size = 64
+text = "Paused"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="PauseMenu/Control/BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 16
+vertical = true
+
+[node name="ButtonSave" type="Button" parent="PauseMenu/Control/BoxContainer/BoxContainer"]
+layout_mode = 2
+text = "SAVE"
+
+[node name="ButtonMain" type="Button" parent="PauseMenu/Control/BoxContainer/BoxContainer"]
+layout_mode = 2
+text = "MAIN MENU"

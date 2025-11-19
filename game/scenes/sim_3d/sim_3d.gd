@@ -34,15 +34,16 @@ func _ready() -> void:
 	# 2) Assemble and register the selected car blueprint
 	_assemble_selected_car()
 	
+	var events := sim_controller.get_event_bus()
 	# 3) Stream sim_controller states into the renderer (adapter to drop the first arg)
-	sim_controller.state_updated.connect(func(_car_id, state: Dictionary) -> void:
+	events.state_updated.connect(func(_car_id, state: Dictionary) -> void:
 		state.lane = 1
 		renderer.update_car_snapshot(state)
 	)
 
 	# (Optional) Also watch finish/lap/derail for UI
-	sim_controller.car_finished.connect(_on_car_finished)
-	sim_controller.car_derailed.connect(func(id, t, f): print("Derailed", id, t, f))
+	events.car_finished.connect(_on_car_finished)
+	events.car_derailed.connect(func(id, t, f): print("Derailed", id, t, f))
 
 func _physics_process(delta: float) -> void:
 	# Advance the sim_controllerulation at your engine rate

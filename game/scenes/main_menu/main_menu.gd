@@ -19,7 +19,7 @@ func _on_button_my_spare_parts() -> void:
 	SceneManager.change_scene_to(&"my_spare_parts")	
 
 func _on_button_options_pressed() -> void:
-	pass
+	SceneManager.change_scene_to(&"option_menu")	
 
 func _on_button_quit_pressed() -> void:
 	get_tree().quit()

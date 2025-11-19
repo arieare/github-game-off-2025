@@ -88,18 +88,20 @@ func _ready() -> void:
 
 	_update_telemetry_ui()
 
-	if not controller.segment_entered.is_connected(_on_segment_entered):
-		controller.segment_entered.connect(_on_segment_entered)
-	if not controller.lap_completed.is_connected(_on_lap_completed):
-		controller.lap_completed.connect(_on_lap_completed)
-	if not controller.car_finished.is_connected(_on_car_finished):
-		controller.car_finished.connect(_on_car_finished)
-	if not controller.rail_hit.is_connected(_on_rail_hit):
-		controller.rail_hit.connect(_on_rail_hit)
-	if not controller.car_derailed.is_connected(_on_car_derailed):
-		controller.car_derailed.connect(_on_car_derailed)
-	if not controller.state_updated.is_connected(_on_state_updated):
-		controller.state_updated.connect(_on_state_updated)
+	var events := controller.get_event_bus()
+	if events != null:
+		if not events.segment_entered.is_connected(_on_segment_entered):
+			events.segment_entered.connect(_on_segment_entered)
+		if not events.lap_completed.is_connected(_on_lap_completed):
+			events.lap_completed.connect(_on_lap_completed)
+		if not events.car_finished.is_connected(_on_car_finished):
+			events.car_finished.connect(_on_car_finished)
+		if not events.rail_hit.is_connected(_on_rail_hit):
+			events.rail_hit.connect(_on_rail_hit)
+		if not events.car_derailed.is_connected(_on_car_derailed):
+			events.car_derailed.connect(_on_car_derailed)
+		if not events.state_updated.is_connected(_on_state_updated):
+			events.state_updated.connect(_on_state_updated)
 
 func _process(delta: float) -> void:
 	if controller == null or not controller.is_running():
@@ -132,13 +134,10 @@ func _apply_track_start_lanes() -> void:
 
 # ---- signal handlers ----
 func _on_segment_entered(car_id: Variant, idx: int, seg_type: String, s_start: float) -> void:
-	controller.debug_dump()
 
 func _on_lap_completed(car_id: Variant, lap: int, total_time: float) -> void:
-	controller.debug_dump()
 
 func _on_car_finished(car_id: Variant, total_time: float) -> void:
-	controller.debug_dump()
 	print("Car %s finished at %.3fs" % [str(car_id), total_time])
 	if _sim_ui != null:
 		_sim_ui.refresh_button_states()
