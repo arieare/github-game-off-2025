@@ -1,18 +1,15 @@
 extends TextureRect
+class_name MenuPointer
+
+@export var first_button: Button
 
 func _ready() -> void:
 	get_viewport().gui_focus_changed.connect(_on_focus_change)
+	await get_tree().process_frame
+	move_pointer_to(first_button)
 
 func _on_focus_change(node:Control) -> void:
 	move_pointer_to(node)
-
-#func _process(_delta: float) -> void:
-	#if get_viewport().gui_get_hovered_control() == null:
-		#return
-	#else:
-		#var node = get_viewport().gui_get_hovered_control()
-		#if node is Button:
-			#move_pointer_to(get_viewport().gui_get_hovered_control())
 
 func move_pointer_to(node: Control) -> void:
 	var self_size_y = self.get_rect().size.y

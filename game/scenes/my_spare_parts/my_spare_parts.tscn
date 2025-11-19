@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dn1mdfvjowpvd"]
+[gd_scene load_steps=7 format=3 uid="uid://dn1mdfvjowpvd"]
 
 [ext_resource type="Script" uid="uid://by8b4w02i8ffn" path="res://scenes/my_spare_parts/my_spare_parts.gd" id="1_iwovb"]
 [ext_resource type="Script" uid="uid://cv33jac2vv3r" path="res://scenes/my_spare_parts/cam_gymball.gd" id="2_k20k8"]
+[ext_resource type="Theme" uid="uid://bw64kxghkkw3t" path="res://assets/ui/default_ui.tres" id="3_t567a"]
+[ext_resource type="Texture2D" uid="uid://cgklcw8w6l6ud" path="res://assets/icons/ic-arrow-fat-left.svg" id="4_e5jrr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iwovb"]
 size = Vector3(100, 10, 0.1)
@@ -11,14 +13,14 @@ fog_enabled = true
 
 [node name="MySpareParts" type="Node" node_paths=PackedStringArray("spare_part_tab", "chassis_tab", "body_tab", "motor_tab", "roller_tab", "wheel_tab", "description_box", "btn_back", "preview_node")]
 script = ExtResource("1_iwovb")
-spare_part_tab = NodePath("UI/Control/TabContainer")
-chassis_tab = NodePath("UI/Control/TabContainer/Chassis")
-body_tab = NodePath("UI/Control/TabContainer/Body")
-motor_tab = NodePath("UI/Control/TabContainer/Motor")
-roller_tab = NodePath("UI/Control/TabContainer/Roller")
-wheel_tab = NodePath("UI/Control/TabContainer/Wheel")
-description_box = NodePath("UI/Control/InformationPanel/ItemInfo")
-btn_back = NodePath("UI/Control/TopBar/ButtonBack")
+spare_part_tab = NodePath("UI/Control/MarginContainer/TabContainer")
+chassis_tab = NodePath("UI/Control/MarginContainer/TabContainer/Chassis/MarginContainer/GridContainer")
+body_tab = NodePath("UI/Control/MarginContainer/TabContainer/Body/MarginContainer/GridContainer")
+motor_tab = NodePath("UI/Control/MarginContainer/TabContainer/Motor/MarginContainer/GridContainer")
+roller_tab = NodePath("UI/Control/MarginContainer/TabContainer/Roller/GridContainer")
+wheel_tab = NodePath("UI/Control/MarginContainer/TabContainer/Wheel/GridContainer")
+description_box = NodePath("UI/Control/MarginContainer/InformationPanel/ItemInfo")
+btn_back = NodePath("UI/Control/MarginContainer/TopBar/ButtonBack")
 preview_node = NodePath("Preview")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -55,88 +57,110 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("3_t567a")
 
-[node name="TabContainer" type="TabContainer" parent="UI/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control"]
 layout_mode = 1
-anchors_preset = 9
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 42.0
-offset_right = 318.0
+grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="TopBar" type="FlowContainer" parent="UI/Control/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ButtonBack" type="Button" parent="UI/Control/MarginContainer/TopBar"]
+layout_mode = 2
+theme_type_variation = &"TextButton"
+text = "Back"
+icon = ExtResource("4_e5jrr")
+
+[node name="TabContainer" type="TabContainer" parent="UI/Control/MarginContainer"]
+custom_minimum_size = Vector2(350, 400)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
 tab_alignment = 1
 current_tab = 0
 
-[node name="Motor" type="PanelContainer" parent="UI/Control/TabContainer"]
+[node name="Motor" type="PanelContainer" parent="UI/Control/MarginContainer/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Motor"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control/MarginContainer/TabContainer/Motor"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="GridContainer" type="GridContainer" parent="UI/Control/MarginContainer/TabContainer/Motor/MarginContainer"]
 layout_mode = 2
 columns = 5
 
-[node name="Body" type="PanelContainer" parent="UI/Control/TabContainer"]
+[node name="Body" type="PanelContainer" parent="UI/Control/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Body"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control/MarginContainer/TabContainer/Body"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="GridContainer" type="GridContainer" parent="UI/Control/MarginContainer/TabContainer/Body/MarginContainer"]
 layout_mode = 2
 columns = 5
 
-[node name="Chassis" type="PanelContainer" parent="UI/Control/TabContainer"]
+[node name="Chassis" type="PanelContainer" parent="UI/Control/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Chassis"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control/MarginContainer/TabContainer/Chassis"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="GridContainer" type="GridContainer" parent="UI/Control/MarginContainer/TabContainer/Chassis/MarginContainer"]
 layout_mode = 2
 columns = 5
 
-[node name="Roller" type="PanelContainer" parent="UI/Control/TabContainer"]
+[node name="Roller" type="PanelContainer" parent="UI/Control/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Roller"]
+[node name="GridContainer" type="GridContainer" parent="UI/Control/MarginContainer/TabContainer/Roller"]
 layout_mode = 2
 columns = 5
 
-[node name="Wheel" type="PanelContainer" parent="UI/Control/TabContainer"]
+[node name="Wheel" type="PanelContainer" parent="UI/Control/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
-[node name="GridContainer" type="GridContainer" parent="UI/Control/TabContainer/Wheel"]
+[node name="GridContainer" type="GridContainer" parent="UI/Control/MarginContainer/TabContainer/Wheel"]
 layout_mode = 2
 columns = 5
 
-[node name="TopBar" type="PanelContainer" parent="UI/Control"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-grow_horizontal = 2
-
-[node name="ButtonBack" type="Button" parent="UI/Control/TopBar"]
+[node name="InformationPanel" type="PanelContainer" parent="UI/Control/MarginContainer"]
+custom_minimum_size = Vector2(300, 500)
 layout_mode = 2
-size_flags_horizontal = 0
-text = "< Back"
+size_flags_horizontal = 8
+theme_type_variation = &"InfoPanel"
 
-[node name="InformationPanel" type="PanelContainer" parent="UI/Control"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -80.0
-offset_top = -151.0
-offset_right = 388.0
-offset_bottom = -37.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="ItemInfo" type="RichTextLabel" parent="UI/Control/InformationPanel"]
+[node name="ItemInfo" type="RichTextLabel" parent="UI/Control/MarginContainer/InformationPanel"]
 layout_mode = 2
 bbcode_enabled = true
 text = "The quick brown fox"

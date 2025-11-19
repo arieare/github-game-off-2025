@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://c7auuy8faw3do"]
+[gd_scene load_steps=43 format=3 uid="uid://c7auuy8faw3do"]
 
 [ext_resource type="Script" uid="uid://b7wovh0t2itor" path="res://modules/track/track_renderer_3d.gd" id="1_66fm1"]
 [ext_resource type="Script" uid="uid://dw0k251mokf2t" path="res://scenes/sim_3d/sim_3d.gd" id="1_qbjwp"]
@@ -17,7 +17,9 @@
 [ext_resource type="ArrayMesh" uid="uid://bi6008iq5ciqm" path="res://assets/model/environment/tree_cone.obj" id="13_pfj6h"]
 [ext_resource type="FontFile" uid="uid://d0pgb635wn6s" path="res://assets/font/tourney/Tourney-ExtraBoldItalic.ttf" id="17_coyhy"]
 [ext_resource type="Script" uid="uid://ccdjulgenb5hh" path="res://scenes/sim_3d/start_machine_button.gd" id="18_4ey6a"]
+[ext_resource type="Script" uid="uid://bumojpdbq2i1x" path="res://scenes/sim_3d/pause_menu.gd" id="19_5kkai"]
 [ext_resource type="FontFile" uid="uid://bk3ontm00dw2v" path="res://assets/font/outfit/Outfit-SemiBold.ttf" id="19_8snin"]
+[ext_resource type="Texture2D" uid="uid://cpdt0xqenfnp5" path="res://assets/icons/ic-x.svg" id="21_coyhy"]
 [ext_resource type="Shader" uid="uid://dx8jkuhw2uv4s" path="res://assets/shader/vignette.gdshader" id="21_viiki"]
 
 [sub_resource type="Gradient" id="Gradient_mf771"]
@@ -275,6 +277,23 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
+[node name="Telemetry" type="RichTextLabel" parent="UI/Control/MarginContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("7_gm3vh")
+text = "telemetry texts"
+
+[node name="Battery" type="TextureProgressBar" parent="UI/Control/MarginContainer"]
+layout_mode = 2
+step = 10.0
+value = 100.0
+allow_greater = true
+fill_mode = 3
+texture_under = SubResource("GradientTexture2D_pfj6h")
+texture_over = SubResource("GradientTexture2D_pt0l3")
+texture_progress = SubResource("GradientTexture2D_s0s05")
+
 [node name="UITop" type="BoxContainer" parent="UI/Control/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
@@ -293,18 +312,31 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 
-[node name="Logo" type="BoxContainer" parent="UI/Control/MarginContainer/UITop"]
+[node name="UITop2" type="BoxContainer" parent="UI/Control/MarginContainer"]
+custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 size_flags_vertical = 0
+alignment = 2
+
+[node name="TextureButton" type="TextureButton" parent="UI/Control/MarginContainer/UITop2"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Logo" type="BoxContainer" parent="UI/Control/MarginContainer/UITop2/TextureButton"]
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 24.0
+size_flags_vertical = 0
+mouse_filter = 2
 theme_override_constants/separation = 0
 alignment = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/Control/MarginContainer/UITop/Logo"]
+[node name="ColorRect" type="ColorRect" parent="UI/Control/MarginContainer/UITop2/TextureButton/Logo"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 color = Color(0.82, 0.37392002, 0.2624, 1)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/Control/MarginContainer/UITop/Logo/ColorRect"]
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Control/MarginContainer/UITop2/TextureButton/Logo/ColorRect"]
 clip_contents = false
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 1
@@ -322,12 +354,12 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 
-[node name="ColorRect2" type="ColorRect" parent="UI/Control/MarginContainer/UITop/Logo"]
+[node name="ColorRect2" type="ColorRect" parent="UI/Control/MarginContainer/UITop2/TextureButton/Logo"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 color = Color(0.3116, 0.43022677, 0.82, 1)
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="UI/Control/MarginContainer/UITop/Logo/ColorRect2"]
+[node name="RichTextLabel2" type="RichTextLabel" parent="UI/Control/MarginContainer/UITop2/TextureButton/Logo/ColorRect2"]
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
@@ -343,22 +375,6 @@ text = "G"
 fit_content = true
 scroll_active = false
 horizontal_alignment = 1
-
-[node name="Telemetry" type="RichTextLabel" parent="UI/Control/MarginContainer"]
-layout_mode = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = ExtResource("7_gm3vh")
-text = "telemetry texts"
-
-[node name="Battery" type="TextureProgressBar" parent="UI/Control/MarginContainer"]
-layout_mode = 2
-step = 10.0
-value = 100.0
-allow_greater = true
-fill_mode = 3
-texture_under = SubResource("GradientTexture2D_pfj6h")
-texture_over = SubResource("GradientTexture2D_pt0l3")
-texture_progress = SubResource("GradientTexture2D_s0s05")
 
 [node name="UIBottom" type="BoxContainer" parent="UI/Control/MarginContainer"]
 custom_minimum_size = Vector2(200, 0)
@@ -417,8 +433,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PauseMenu" type="CanvasLayer" parent="."]
-visible = false
+[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("button_pause", "button_return", "button_main")]
+script = ExtResource("19_5kkai")
+button_pause = NodePath("../UI/Control/MarginContainer/UITop2/TextureButton")
+button_return = NodePath("Control/BoxContainer/BoxContainer/ButtonReturn")
+button_main = NodePath("Control/BoxContainer/BoxContainer/ButtonMain")
 
 [node name="Control" type="Control" parent="PauseMenu"]
 layout_mode = 3
@@ -427,6 +446,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme = ExtResource("12_85o2c")
 
 [node name="BG" type="TextureRect" parent="PauseMenu/Control"]
@@ -493,3 +513,9 @@ text = "SAVE"
 [node name="ButtonMain" type="Button" parent="PauseMenu/Control/BoxContainer/BoxContainer"]
 layout_mode = 2
 text = "MAIN MENU"
+
+[node name="ButtonReturn" type="Button" parent="PauseMenu/Control/BoxContainer/BoxContainer"]
+layout_mode = 2
+theme_type_variation = &"TextButton"
+text = "RETURN"
+icon = ExtResource("21_coyhy")

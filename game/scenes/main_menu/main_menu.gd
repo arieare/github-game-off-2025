@@ -13,7 +13,7 @@ func _ready() -> void:
 	button_start.grab_focus()
 
 func _on_button_start_pressed() -> void:
-	SceneManager.change_scene_to(&"simulation")
+	SceneManager.change_scene_to(&"track_selector")
 	
 func _on_button_my_spare_parts() -> void:
 	SceneManager.change_scene_to(&"my_spare_parts")	

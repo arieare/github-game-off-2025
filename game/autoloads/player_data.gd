@@ -150,6 +150,8 @@ func _is_known_part(part_id: String) -> bool:
 func _add_dummy_player_data() -> void:
 	if not profile["inventory"]["spare_parts"].is_empty():
 		return
+	unlock_track("res://assets/tracks/basic_loop.tres")
+	unlock_track("res://assets/tracks/complex_loop.tres")
 	add_spare_part("motor_standard_kit", 2)
 	add_spare_part("motor_hyper_dash_3", 1)
 	add_spare_part("body_standard_kit", 1)

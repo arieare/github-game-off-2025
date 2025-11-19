@@ -67,25 +67,6 @@ offset_right = 300.0
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_fsom3")
 
-[node name="MenuPointer" type="TextureRect" parent="UI/Control"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 548.0
-offset_top = 296.0
-offset_right = 580.0
-offset_bottom = 312.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(8, 8)
-texture = ExtResource("5_4xg86")
-expand_mode = 2
-stretch_mode = 5
-script = ExtResource("4_3ovsr")
-
 [node name="BoxContainer3" type="BoxContainer" parent="UI/Control"]
 layout_mode = 1
 anchors_preset = 4
@@ -98,12 +79,12 @@ grow_vertical = 2
 theme_override_constants/separation = 48
 vertical = true
 
-[node name="BoxContainer2" type="BoxContainer" parent="UI/Control/BoxContainer3"]
+[node name="Credit" type="BoxContainer" parent="UI/Control/BoxContainer3"]
 layout_mode = 2
 alignment = 1
 vertical = true
 
-[node name="Studio" type="RichTextLabel" parent="UI/Control/BoxContainer3/BoxContainer2"]
+[node name="Subs" type="RichTextLabel" parent="UI/Control/BoxContainer3/Credit"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.43137255, 0.43137255, 0.43137255, 1)
 theme_override_font_sizes/normal_font_size = 12
@@ -112,7 +93,7 @@ fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Studio2" type="RichTextLabel" parent="UI/Control/BoxContainer3/BoxContainer2"]
+[node name="StudioName" type="RichTextLabel" parent="UI/Control/BoxContainer3/Credit"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.43, 0.43, 0.43, 1)
 theme_override_font_sizes/normal_font_size = 16
@@ -126,7 +107,7 @@ layout_mode = 2
 theme_override_constants/separation = -20
 vertical = true
 
-[node name="Title" type="RichTextLabel" parent="UI/Control/BoxContainer3/Title"]
+[node name="Title1" type="RichTextLabel" parent="UI/Control/BoxContainer3/Title"]
 clip_contents = false
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.2509804, 0.2627451, 1)
@@ -194,6 +175,26 @@ layout_mode = 2
 theme_type_variation = &"MainMenuButton"
 text = "Quit"
 alignment = 0
+
+[node name="MenuPointer" type="TextureRect" parent="UI/Control" node_paths=PackedStringArray("first_button")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -509.0
+offset_top = 46.0
+offset_right = -477.0
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(8, 8)
+texture = ExtResource("5_4xg86")
+expand_mode = 2
+stretch_mode = 5
+script = ExtResource("4_3ovsr")
+first_button = NodePath("../BoxContainer3/Menu/ButtonStart")
 
 [node name="Node3D" type="Node3D" parent="."]
 

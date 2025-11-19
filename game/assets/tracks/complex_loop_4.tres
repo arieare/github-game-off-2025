@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TrackBlueprint" load_steps=2 format=3 uid="uid://dddfn1qpuie4m"]
+
+[ext_resource type="Script" uid="uid://3birlp7nuw2y" path="res://modules/track/track_blueprint.gd" id="1_a1sqt"]
+
+[resource]
+script = ExtResource("1_a1sqt")
+lanes = 3
+laps_required = 8
+tokens = ["ST", "S:0.5,mu1.05", "CL:r1.2,a45,b8,mu1.40", "S:0.8,mu1.25", "R:6:0.6", "S:0.6,mu1.10", "BP:0.45:0.05,mu1.30", "CR:r0.9,a60,b10,mu1.45", "S:1.4,mu1.35", "S:0.6,mu1.15", "CL:r1.0,a30,b4,mu1.38", "S:0.5,mu1.05", "S:0.9,mu1.20", "R:-6:0.6", "S:1.0,mu1.28", "CR:r1.1,a45,b6,mu1.40", "S:0.7,mu1.30", "CL:r0.85,a90,b12,mu1.50", "S:0.6,mu1.22", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "S:1.2,mu1.30", "S:1.2,mu1.30", "S:1.2,mu1.30", "S:1.2,mu1.30", "S:1.2,mu1.30", "S:1.2,mu1.30", "S:1.2,mu1.30", "CL:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CR:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "S:1.2,mu1.30", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a45,b8,mu1.40", "CL:r1.2,a43,b8,mu1.40", "CR:r1.2,a30,b8,mu1.40", "FN"]

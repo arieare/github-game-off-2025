@@ -48,6 +48,9 @@ func _ready() -> void:
 		path = Path3D.new()
 		add_child(path)
 		path.curve = curve
+	var selected_track = Global.selected_track
+	if selected_track != null:
+		track = selected_track
 	set_track_model(track)
 
 func set_track_model(blueprint: TrackBlueprint) -> void:

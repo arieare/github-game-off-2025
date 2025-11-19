@@ -1,0 +1,89 @@
+[gd_scene load_steps=8 format=3 uid="uid://j722ehrsdctp"]
+
+[ext_resource type="Theme" uid="uid://bw64kxghkkw3t" path="res://assets/ui/default_ui.tres" id="1_7grp6"]
+[ext_resource type="Script" uid="uid://hdmxj26rj8nk" path="res://scenes/track_selector/track_selector.gd" id="1_gtehd"]
+[ext_resource type="Texture2D" uid="uid://cgklcw8w6l6ud" path="res://assets/icons/ic-arrow-fat-left.svg" id="2_gtehd"]
+[ext_resource type="FontFile" uid="uid://bk3ontm00dw2v" path="res://assets/font/outfit/Outfit-SemiBold.ttf" id="3_bf2eq"]
+[ext_resource type="PackedScene" uid="uid://dapol744l2280" path="res://scenes/track_selector/carousel_menu.tscn" id="4_carousel"]
+
+[sub_resource type="Gradient" id="Gradient_1b6gl"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.9779369, 0.97793704, 0.9779369, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2vgo3"]
+gradient = SubResource("Gradient_1b6gl")
+
+[node name="TrackSelector" type="Node"]
+
+[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("carousel_ui", "button_select_track", "button_back")]
+script = ExtResource("1_gtehd")
+carousel_ui = NodePath("Control/MarginContainer/BoxContainer/CarouselMenu")
+button_select_track = NodePath("Control/MarginContainer/BoxContainer/ButtonSelectTrack")
+button_back = NodePath("Control/MarginContainer/TopBar/ButtonBack")
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7grp6")
+
+[node name="BG" type="TextureRect" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_2vgo3")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="TopBar" type="FlowContainer" parent="UI/Control/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ButtonBack" type="Button" parent="UI/Control/MarginContainer/TopBar"]
+layout_mode = 2
+theme_type_variation = &"TextButton"
+text = "Back"
+icon = ExtResource("2_gtehd")
+
+[node name="BoxContainer" type="BoxContainer" parent="UI/Control/MarginContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+vertical = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Control/MarginContainer/BoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+theme_override_fonts/normal_font = ExtResource("3_bf2eq")
+theme_override_font_sizes/normal_font_size = 64
+text = "Select Track"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CarouselMenu" parent="UI/Control/MarginContainer/BoxContainer" instance=ExtResource("4_carousel")]
+layout_mode = 2
+is_wrapping = false
+
+[node name="ButtonSelectTrack" type="Button" parent="UI/Control/MarginContainer/BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Select Complex Loop"

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://bw64kxghkkw3t"]
+[gd_resource type="Theme" load_steps=19 format=3 uid="uid://bw64kxghkkw3t"]
 
 [ext_resource type="FontFile" uid="uid://brrn01aesuudt" path="res://assets/font/tourney/Tourney-ExtraBold.ttf" id="1_yosvr"]
 [ext_resource type="FontFile" uid="uid://bk3ontm00dw2v" path="res://assets/font/outfit/Outfit-SemiBold.ttf" id="2_yosvr"]
@@ -89,6 +89,17 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 corner_detail = 16
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yavxj"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.015971804, 0.015971804, 0.01597179, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yavxj"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -143,6 +154,8 @@ Button/styles/hover = SubResource("StyleBoxFlat_50yeq")
 Button/styles/hover_pressed = SubResource("StyleBoxFlat_66ohx")
 Button/styles/normal = SubResource("StyleBoxFlat_yosvr")
 Button/styles/pressed = SubResource("StyleBoxFlat_6pfmj")
+InfoPanel/base_type = &"PanelContainer"
+InfoPanel/styles/panel = SubResource("StyleBoxFlat_yavxj")
 MainMenuButton/base_type = &"Button"
 MainMenuButton/colors/font_color = Color(1, 1, 1, 1)
 MainMenuButton/colors/font_focus_color = Color(1, 1, 1, 1)

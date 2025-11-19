@@ -3,11 +3,11 @@ extends Node
 signal item_selected(spare_part_id: String)
 
 @export var spare_part_tab: TabContainer
-@export var chassis_tab: PanelContainer
-@export var body_tab: PanelContainer
-@export var motor_tab: PanelContainer
-@export var roller_tab: PanelContainer
-@export var wheel_tab: PanelContainer
+@export var chassis_tab: GridContainer
+@export var body_tab: GridContainer
+@export var motor_tab: GridContainer
+@export var roller_tab: GridContainer
+@export var wheel_tab: GridContainer
 
 @export var description_box: RichTextLabel
 
@@ -27,11 +27,11 @@ func _on_btn_back_pressed() -> void:
 
 func _init_tab_grids() -> void:
 	_tab_grids.clear()
-	_tab_grids[SparePartData.SparePartType.MOTOR] = _get_grid_from_panel(motor_tab)
-	_tab_grids[SparePartData.SparePartType.BODY] = _get_grid_from_panel(body_tab)
-	_tab_grids[SparePartData.SparePartType.BATTERY] = _get_grid_from_panel(chassis_tab)
-	_tab_grids[SparePartData.SparePartType.WHEEL] = _get_grid_from_panel(wheel_tab)
-	_tab_grids[SparePartData.SparePartType.ROLLER] = _get_grid_from_panel(roller_tab)
+	_tab_grids[SparePartData.SparePartType.MOTOR] = motor_tab
+	_tab_grids[SparePartData.SparePartType.BODY] = body_tab
+	_tab_grids[SparePartData.SparePartType.BATTERY] = chassis_tab
+	_tab_grids[SparePartData.SparePartType.WHEEL] = wheel_tab
+	_tab_grids[SparePartData.SparePartType.ROLLER] = roller_tab
 
 func _get_grid_from_panel(panel: PanelContainer) -> GridContainer:
 	if panel == null:

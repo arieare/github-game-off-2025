@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://djenqtjqqaoiq"]
+
+[ext_resource type="Script" uid="uid://dk8lq8j4m4eev" path="res://scenes/track_selector/carousel_item.gd" id="1_itemscript"]
+
+[node name="CarouselItem" type="Control" node_paths=PackedStringArray("_background", "_title_label", "_status_label")]
+custom_minimum_size = Vector2(220, 260)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+size_flags_vertical = 2
+script = ExtResource("1_itemscript")
+_background = NodePath("CarouselItem#Background")
+_title_label = NodePath("CarouselItem_Content#TitleLabel")
+_status_label = NodePath("CarouselItem_Content#StatusLabel")
+
+[node name="CarouselItem#Background" type="ColorRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.92, 0.93, 0.96, 1)
+
+[node name="CarouselItem#Content" type="VBoxContainer" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+
+[node name="CarouselItem_Content#TitleLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Track"
+horizontal_alignment = 1
+
+[node name="CarouselItem_Content#StatusLabel" type="Label" parent="."]
+layout_mode = 0
+text = "Locked"
+horizontal_alignment = 1
